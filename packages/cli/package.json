@@ -1,0 +1,17 @@
+{
+  "name": "@etherfe/cli",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nolonger21",
+  "license": "MIT",
+  "gitHead": "360778cc11a0be828960d342c38aef069742b49a"
+}
