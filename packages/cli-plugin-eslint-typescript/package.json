@@ -1,0 +1,24 @@
+{
+  "name": "@etherfe/cli-plugin-eslint-typescript",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "@babel/preset-typescript": "^7.10.4",
+    "@etherfe/cli-utils": "^0.0.0-0",
+    "fork-ts-checker-webpack-plugin": "^5.1.0"
+  },
+  "peerDependencies": {
+    "@etherfe/cli-babel": "^0.0.0-0",
+    "@etherfe/cli-eslint": "^0.0.0-0",
+    "@etherfe/cli-service": "^0.0.0-0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nolonger21",
+  "license": "MIT"
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@etherfe/cli-plugin-eslint",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "eslint-loader": "^4.0.2",
+    "@etherfe/cli-utils": "^0.0.0-0"
+  },
+  "peerDependencies": {
+    "@etherfe/cli-service": "^0.0.0-0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nolonger21",
+  "license": "MIT"
+}

@@ -1,0 +1,78 @@
+{
+  // 关闭vscode默认格式化规则，用prettier代替
+  "json.format.enable": false,
+  "html.format.enable": false,
+  "javascript.format.enable": false,
+  "typescript.format.enable": false,
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": false,
+  "javascript.format.insertSpaceAfterCommaDelimiter": false,
+  "javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "javascript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
+  "javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.format.insertSpaceBeforeAndAfterBinaryOperators": false,
+  "typescript.format.insertSpaceAfterSemicolonInForStatements": false,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
+  "typescript.format.insertSpaceAfterKeywordsInControlFlowStatements": false,
+  "typescript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+  "typescript.format.insertSpaceAfterCommaDelimiter": false,
+  "typescript.autoClosingTags": false,
+  "javascript.suggest.completeFunctionCalls": true,
+  "javascript.format.insertSpaceAfterSemicolonInForStatements": false,
+  "javascript.format.insertSpaceBeforeAndAfterBinaryOperators": false,
+
+  // 统一 编辑器插件的 tab size
+  "editor.tabSize": 2,
+  "prettier.tabWidth": 2,
+  "vetur.format.options.tabSize": 2,
+
+  // 配置 编辑器插件 prettier默认风格
+  "prettier.printWidth": 120,
+  "prettier.semi": false,
+  "prettier.singleQuote": true,
+
+  // 编辑器的prettier 格式化是否打开，这里关闭，使用eslint关联的prettier格式化
+  "prettier.enable": false,
+  // 保存的时候自动格式化，使用的为vscode本身的json/ts/js/html等，以及用于触发编辑器的prettier的修复,eslint tslint不控制
+  "editor.formatOnSave": false,
+
+  // eslint 检测是否打开
+  "eslint.enable": true,
+  // 该项eslint.format.enable等同于editor.formatOnSave，只是固定eslint为格式化程序
+  // "eslint.format.enable": true,
+  // 定制化第三方保存修复配置，推荐配置下面的
+  "editor.codeActionsOnSave": {
+    // "source.fixAll": true,
+    "source.fixAll.eslint": true
+    // "source.fixAll.tslint": true,
+    // "source.fixAll.stylelint": false
+  },
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.alwaysShowStatus": true,
+  "eslint.packageManager": "yarn",
+  // vscode编辑器提示，不需要加特定语言识别，vscode会自动根据eslintrc识别
+  "eslint.validate": ["javascript", "javascriptreact","typescript", "typescriptreact", "vue"],
+  // #让vue中的js按编辑器自带的ts格式进行格式化
+  // 如果是ts就使用prettier-eslint ，这个需要cpm
+  // 这里提示ts没有eslint这个值。但是实测是生效的
+  "vetur.format.defaultFormatter.ts": "prettier-eslint",
+  "vetur.format.defaultFormatter.js": "prettier-eslint",
+  "vetur.validation.template":false,
+  "vetur.format.defaultFormatter.html": "js-beautify-html",
+  "vetur.format.defaultFormatterOptions": {
+    "js-beautify-html": {
+      "wrap_attributes": "force-expand-multiline",
+      "end_with_newline": false
+    }
+  },
+  "terminal.integrated.rendererType": "dom",
+  "window.zoomLevel": 0,
+  "vscode_vibrancy.opacity": -1,
+  "vscode_vibrancy.theme": "Default Dark",
+  "glassit.alpha": 220,
+  "vscode_vibrancy.type": "acrylic",
+  "search.followSymlinks": false,
+  "[vue]": {
+    "editor.defaultFormatter": "octref.vetur"
+  }
+}

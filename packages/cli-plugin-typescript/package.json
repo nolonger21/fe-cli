@@ -1,0 +1,26 @@
+{
+  "name": "@etherfe/cli-plugin-typescript",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "@etherfe/cli-utils": "^0.0.0-0",
+    "babel-loader": "^8.1.0",
+    "cache-loader": "^4.1.0",
+    "fork-ts-checker-webpack-plugin": "^3.1.1",
+    "ts-loader": "^8.0.3",
+    "tslint": "^6.1.3"
+  },
+  "peerDependencies": {
+    "@etherfe/cli-babel": "^0.0.0-0",
+    "@etherfe/cli-service": "^0.0.0-0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nolonger21",
+  "license": "MIT"
+}

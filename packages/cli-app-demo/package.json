@@ -1,0 +1,28 @@
+{
+  "name": "@etherfe/cli-app-demo",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "serve": "fe-cli-service serve",
+    "build": "fe-cli-service build",
+    "inspect": "fe-cli-service inspect",
+    "eslint": "eslint src --ext .js,.vue --fix"
+  },
+  "dependencies": {
+    "vue": "^2.6.12",
+    "vue-template-compiler": "^2.6.12"
+  },
+  "devDependencies": {
+    "@etherfe/cli-plugin-vue": "0.0.0",
+    "@etherfe/cli-service": "0.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8",
+    "iOS 7"
+  ],
+  "author": "nolonger21",
+  "license": "MIT"
+}

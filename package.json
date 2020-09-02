@@ -8,10 +8,10 @@
   "description": "fe scaffold cli",
   "main": "index.js",
   "scripts": {
-    "test": "yarn workspace @etherfe/example test"
+    "serve": "yarn workspace @etherfe/cli-service-demo serve",
+    "build": "yarn workspace @etherfe/cli-service-demo build",
+    "inspect": "yarn workspace @etherfe/cli-service-demo inspect"
   },
-  "author": "nolonger21",
-  "license": "MIT",
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
@@ -23,5 +23,11 @@
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
-  }
+  },
+  "engines": {
+    "node": ">=10",
+    "pnpm": ">=3"
+  },
+  "author": "nolonger21",
+  "license": "MIT"
 }
