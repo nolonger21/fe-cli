@@ -103,7 +103,7 @@ module.exports = (api, options) => {
       }
       addDevClientToEntry(webpackConfig, devClients)
     }
-    console.info(webpackConfig)
+    // console.info(webpackConfig)
     const compiler = webpack(webpackConfig)
 
     compiler.hooks.failed.tap('fe-cli-service serve', msg => {

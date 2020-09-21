@@ -1,6 +1,6 @@
 import vue from 'vue'
 import App from './App'
-import './style.less'
+// import './style.less'
 
 window.vm = new vue({
   el: '#app',
