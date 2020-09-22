@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <treeSort :tree-data="listData" #default="{ item, index, level, treeData }">
+    <treeSort :tree-data="listData" #default="{ item, index, level, treeData }"
+    @dragstart="dragstart" @drag="drag" @dragend="dragend" @dragenter="dragenter" @dragover="dragover" @dragleave="dragleave" @drop="drop">
       <div class="node-item-content">
         <span>{{item.name}}</span>
         <div class="sort-operation">
@@ -81,19 +82,27 @@ export default {
   },
   methods: {
     up(item, index, treeData) {
-      let lastItem = treeData[index - 1]
-      let tmpSave = item
-      treeData[index] = lastItem
-      treeData[index - 1] = tmpSave
+      this.$set(treeData, [index], treeData[index - 1])
+      this.$set(treeData, [index - 1], item)
     },
-    down() {
-      let nextItem = treeData[index + 1]
-      let tmpSave = item
-      treeData[index] = nextItem
-      treeData[index + 1] = nextItem
+    down(item, index, treeData) {
+      this.$set(treeData, [index], treeData[index + 1])
+      this.$set(treeData, [index + 1], item)
     },
-    sort(){
-
+    dragstart(e) {
+      console.info(e)
+    },
+    drag(e) {
+    },
+    dragend(e) {
+    },
+    dragenter(e) {
+    },
+    dragover(e) {
+    },
+    dragleave(e) {
+    },
+    drop(e) {
     }
   }
 };
