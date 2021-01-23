@@ -6,13 +6,13 @@ const { semver, loadModule, os, warn, tryRequire } = require('@etherfe/cli-utils
 module.exports = (api, options) => {
   const useThreads = process.env.NODE_ENV === 'production'
 
-  api.chainWebpack((webpackConfig) => {
-    webpackConfig.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'))
+  api.chainWebpack((chainWebpack) => {
+    chainWebpack.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'))
 
-    webpackConfig.resolve.extensions.prepend('.ts').prepend('.tsx')
+    chainWebpack.resolve.extensions.prepend('.ts').prepend('.tsx')
 
-    const tsRule = webpackConfig.module.rule('ts').test(/\.ts$/)
-    const tsxRule = webpackConfig.module.rule('tsx').test(/\.tsx$/)
+    const tsRule = chainWebpack.module.rule('ts').test(/\.ts$/)
+    const tsxRule = chainWebpack.module.rule('tsx').test(/\.tsx$/)
 
     const addLoader = ({ name, loader, options }) => {
       tsRule.use(name).loader(loader).options(options)
@@ -85,7 +85,7 @@ module.exports = (api, options) => {
         error( `Please upgrade 'fork-ts-checker-webpack-plugin' to version 5.x.x .`)
         process.exit(1)
       }
-      webpackConfig.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
+      chainWebpack.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
         {
           typescript: {
             extensions: {
@@ -102,7 +102,7 @@ module.exports = (api, options) => {
         },
       ])
     } else {
-      webpackConfig.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
+      chainWebpack.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
         {
           vue: { enabled: true, compiler: 'vue-template-compiler' },
           tslint: fs.existsSync(api.resolve('tslint.json')),

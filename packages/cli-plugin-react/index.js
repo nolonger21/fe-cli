@@ -1,10 +1,10 @@
 module.exports = (api, options) => {
   const { error, warn } = require('@etherfe/cli-utils')
 
-  api.chainWebpack((webpackConfig) => {
+  api.chainWebpack((chainWebpack) => {
 
     if (api.hasPlugin('babel')) {
-      webpackConfig.module
+      chainWebpack.module
         .rule('js')
         .use('babel-loader')
         .tap(options => {

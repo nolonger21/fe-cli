@@ -32,11 +32,11 @@ const forEachCheckIsTsFile = (paths) => {
 exports.checkTsProjectRun = (service, args) => {
   // --no-check-ts-project
   if(args['check-ts-project'] !== undefined) return
-  const projectConfig = typeof service.projectConfig === 'object' ? service.projectConfig : {}
+  const webpackConfig = typeof service.webpackConfig === 'object' ? service.webpackConfig : {}
   let entryFilePaths = []
   let entryTsFile = ''
-  if(projectConfig.entry) {
-    entryFilePaths = typeof projectConfig.entry === 'object' && !Array.isArray(projectConfig.entry) ? Object.values(service.projectConfig.entry) : []
+  if(webpackConfig.entry) {
+    entryFilePaths = typeof webpackConfig.entry === 'object' && !Array.isArray(webpackConfig.entry) ? Object.values(service.webpackConfig.entry) : []
   } else {
     entryFilePaths = [ resolveEntryIndex(service.context) ]
   }

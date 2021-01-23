@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: [
-    // "plugin:@etherfe/recommended"
+    "plugin:@etherfe/recommended"
   ],
   rules: {},
 }

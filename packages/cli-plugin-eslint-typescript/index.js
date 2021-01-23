@@ -2,14 +2,14 @@
 module.exports = (api, options) => {
   const { error, warn, tryRequire, loadModule, semver } = require('@etherfe/cli-utils')
 
-  api.chainWebpack((webpackConfig) => {
-    webpackConfig.resolve
+  api.chainWebpack((chainWebpack) => {
+    chainWebpack.resolve
       .extensions
         .merge(['.ts', '.tsx'])
         .end()
 
     if (api.hasPlugin('babel')) {
-      webpackConfig.module
+      chainWebpack.module
         .rule('js')
         .test(/\.((m|c)?jsx?|tsx?)$/)
         .use('babel-loader')
@@ -29,7 +29,7 @@ module.exports = (api, options) => {
 
     if (api.hasPlugin('eslint')) {
       const matchPatterns = (api.hasPlugin('vue') || api.hasPlugin('vue3')) ? /\.(vue|(j|t)sx?)$/ : /\.(j|t)sx?$/
-      webpackConfig.module
+      chainWebpack.module
         .rule('eslint')
         .test(matchPatterns)
         .use('eslint-loader')
@@ -56,7 +56,7 @@ module.exports = (api, options) => {
       })
     }
     
-    webpackConfig.plugin('fork-ts-checker')
+    chainWebpack.plugin('fork-ts-checker')
       .use(require('fork-ts-checker-webpack-plugin'), [
         {
           typescript: {

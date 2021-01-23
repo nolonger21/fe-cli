@@ -1,7 +1,7 @@
 module.exports = (api, options) => {
-  api.chainWebpack((webpackConfig) => {
+  api.chainWebpack((chainWebpack) => {
     
-    webpackConfig.resolve
+    chainWebpack.resolve
       .extensions
         .merge(['.vue'])
         .end()
@@ -11,7 +11,7 @@ module.exports = (api, options) => {
       '@vue/compiler-sfc': require('@vue/compiler-sfc/package.json').version
     })
 
-    webpackConfig.module
+    chainWebpack.module
       .rule('vue')
         .test(/\.vue$/)
         .use('cache-loader')
@@ -26,12 +26,12 @@ module.exports = (api, options) => {
             }
           }, vueLoaderCacheConfig))
   
-    webpackConfig
+    chainWebpack
       .plugin('vue-loader')
       .use(require('vue-loader').VueLoaderPlugin)
 
     if (api.hasPlugin('babel') && api.hasDepend('element-ui')) {
-      webpackConfig.module
+      chainWebpack.module
         .rule('js')
         .use('babel-loader')
         .tap(options => {
@@ -56,7 +56,7 @@ module.exports = (api, options) => {
       }
     }
 
-    webpackConfig.module
+    chainWebpack.module
       .rule('pug')
         .test(/\.pug$/)
           .oneOf('pug-vue')

@@ -1,11 +1,20 @@
-const path = require('path')
-const resolve = (_path) => path.resolve(__dirname, _path)
 
-module.exports = (config) => {
-  // console.info(config, 'fe.config.js')
+module.exports = ({ config, chainWebpack } = {}) => {
+  config({
+    global: {
+      inlineLimit: 4028
+    },
+    'built-in:config/assets': {
+      inlineLimit: 2000
+    }
+  })
+
+  chainWebpack((chainWebpack) => {
+  })
+
   return {
     entry: {
       app: './src/index.js'
     }
-  } 
+  }
 }

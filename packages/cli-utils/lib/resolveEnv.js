@@ -4,8 +4,6 @@ const path = require('path')
 const dotenv = require('dotenv')
 const dotenvExpand = require('dotenv-expand')
 
-const prefixRE = /^APP_/
-
 exports.loadEnvFile = (envPath) => {
   try {
     const env = dotenv.config({ path: envPath, debug: process.env.DEBUG })
@@ -33,14 +31,20 @@ exports.resolveEnvFiles = (context, mode) => {
   });
 }
 
-exports.resolveClientEnv = (options, raw) => {
+exports.resolveClientEnv = (_prefixRE, envMap, raw) => {
+  const prefixRE = _prefixRE || /^APP_/
   const env = {}
   Object.keys(process.env).forEach(key => {
     if (prefixRE.test(key) || key === 'NODE_ENV') {
       env[key] = process.env[key]
     }
   })
-  env.BASE_URL = options.output.publicPath
+  
+  if (envMap && typeof envMap === 'object') {   
+    Object.keys(envMap).forEach(key => {
+      env[key] = envMap[key]
+    }) 
+  }
 
   if (raw) {
     return env

@@ -12,7 +12,7 @@ function ensureRelative (outputDir, _path) {
 }
 
 module.exports = (api, options) => {
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpack(chainWebpack => {
 
     const isProd = process.env.NODE_ENV === 'production'
     const outputDir = api.resolve(options.output.path)
@@ -58,7 +58,11 @@ module.exports = (api, options) => {
             files: assets,
             options: pluginOptions
           }
-        }, resolveClientEnv(options, true /* raw */))
+        },
+        resolveClientEnv(/^APP_/, {
+            BASE_URL: options.output.publicPath
+          }, true /* raw */)
+        )
       }
     }
 
@@ -88,12 +92,12 @@ module.exports = (api, options) => {
       htmlOptions.template = fs.existsSync(htmlPath) ? htmlPath : defaultHtmlPath
       publicCopyIgnore.push(path.relative(api.resolve('public'), api.resolve(htmlOptions.template)))
 
-      webpackConfig
+      chainWebpack
         .plugin('html')
           .use(HTMLPlugin, [htmlOptions])
 
       // inject preload/prefetch to HTML
-      webpackConfig
+      chainWebpack
         .plugin('preload')
           .use(PreloadPlugin, [{
             rel: 'preload',
@@ -101,7 +105,7 @@ module.exports = (api, options) => {
             fileBlacklist: [/\.map$/, /hot-update\.js$/]
           }])
 
-      webpackConfig
+      chainWebpack
         .plugin('prefetch')
           .use(PreloadPlugin, [{
             rel: 'prefetch',
@@ -138,7 +142,7 @@ module.exports = (api, options) => {
 
         // inject entry
         const entries = Array.isArray(entry) ? entry : [entry]
-        webpackConfig.entry(name).merge(entries.map(e => api.resolve(e)))
+        chainWebpack.entry(name).merge(entries.map(e => api.resolve(e)))
 
         // resolve page index template
         const hasDedicatedTemplate = fs.existsSync(api.resolve(template))
@@ -162,7 +166,7 @@ module.exports = (api, options) => {
           customHtmlOptions
         )
 
-        webpackConfig
+        chainWebpack
           .plugin(`html-${name}`)
             .use(HTMLPlugin, [pageHtmlOptions])
 
@@ -172,7 +176,7 @@ module.exports = (api, options) => {
           normalizePageConfig(multiPageConfig[name]).filename || `${name}.html`
         )
 
-        webpackConfig
+        chainWebpack
           .plugin(`preload-${name}`)
             .use(PreloadPlugin, [{
               rel: 'preload',
@@ -181,7 +185,7 @@ module.exports = (api, options) => {
               fileBlacklist: [/\.map$/, /hot-update\.js$/]
             }])
 
-        webpackConfig
+        chainWebpack
           .plugin(`prefetch-${name}`)
             .use(PreloadPlugin, [{
               rel: 'prefetch',
@@ -193,7 +197,7 @@ module.exports = (api, options) => {
 
     const publicDir = api.resolve('public')
     if (fs.existsSync(publicDir) && fs.readdirSync(publicDir).length) {
-      webpackConfig
+      chainWebpack
         .plugin('copy')
           .use(require('copy-webpack-plugin'), [{
             patterns: [

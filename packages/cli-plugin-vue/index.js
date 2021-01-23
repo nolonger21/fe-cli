@@ -1,12 +1,12 @@
 module.exports = (api, options) => {
-  api.chainWebpack((webpackConfig) => {
+  api.chainWebpack((chainWebpack) => {
     
-    webpackConfig.resolve
+    chainWebpack.resolve
       .extensions
         .merge(['.vue'])
         .end()
 
-    webpackConfig.resolve.alias
+    chainWebpack.resolve.alias
       .set('vue$', 'vue/dist/vue.esm.js')
 
     const vueLoaderCacheIdentifier = {
@@ -19,7 +19,7 @@ module.exports = (api, options) => {
       } catch (e) {}
       const vueLoaderCacheConfig = api.genCacheConfig('vue-loader', vueLoaderCacheIdentifier)
   
-      webpackConfig.module
+      chainWebpack.module
         .rule('vue')
           .test(/\.vue$/)
           .use('cache-loader')
@@ -34,12 +34,12 @@ module.exports = (api, options) => {
               }
             }, vueLoaderCacheConfig))
   
-      webpackConfig
+      chainWebpack
         .plugin('vue-loader')
         .use(require('vue-loader/lib/plugin'))
 
     if (api.hasPlugin('babel') && api.hasDepend('element-ui')) {
-      webpackConfig.module
+      chainWebpack.module
         .rule('js')
         .use('babel-loader')
         .tap(options => {
@@ -64,7 +64,7 @@ module.exports = (api, options) => {
       }
     }
 
-    webpackConfig.module
+    chainWebpack.module
       .rule('pug')
         .test(/\.pug$/)
           .oneOf('pug-vue')

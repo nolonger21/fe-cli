@@ -12,3 +12,6 @@ const abd = {}
 if (abd) {
   //
 }
+console.log(process.env.APP_1)
+console.log(process.env.APP_2)
+console.log(process.env.APP_3)

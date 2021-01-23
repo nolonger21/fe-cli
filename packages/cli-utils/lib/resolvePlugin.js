@@ -1,8 +1,8 @@
 const path = require('path')
 
-const pluginRE = /^(@(etherfe|vue)\/|(etherfe|vue)-|@[\w-]+(\.)?[\w-]+\/(etherfe|vue)-)cli-plugin-/
-// etherfe-cli-plugin-foo, @etherfe/cli-plugin-foo, @bar/etherfe-cli-plugin-foo
-// vue-cli-plugin-foo, @vue/cli-plugin-foo, @bar/vue-cli-plugin-foo
+const pluginRE = /^(@(etherfe|vue)\/|(vue|fe)-|@[\w-]+(\.)?[\w-]+\/(vue|fe)-)cli-plugin-/
+// @etherfe/cli-plugin-foo, fe-cli-plugin-foo, @bar/fe-cli-plugin-foo
+// @vue/cli-plugin-foo, vue-cli-plugin-foo, @bar/vue-cli-plugin-foo
 
 const officialRE = /^@(etherfe|vue)\//
 // @etherfe/cli-plugin-foo @etherfe/cli
@@ -18,7 +18,7 @@ exports.toShortPluginId = id => id.replace(pluginRE, '')
 
 exports.resolvePluginId = id => {
   if (pluginRE.test(id)) return id
-  return `etherfe-cli-plugin-${id}`
+  return `fe-cli-plugin-${id}`
 }
 
 exports.matchesPluginId = (input, full) => {
@@ -63,7 +63,7 @@ exports.loadPkgPlugins = (pkg = {}) => {
 exports.loadLocalPlugins = (context) => {
   let localPlugins = []
   let pluginPaths = []
-  const localPluginPath = path.resolve(context, 'fePlugins')
+  const localPluginPath = path.resolve(context, 'plugins')
   const fs = require("fs");
   if (fs.existsSync(localPluginPath)) {
     pluginPaths = fs.readdirSync(localPluginPath).filter(exports.isPlugin)

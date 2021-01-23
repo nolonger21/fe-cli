@@ -10,7 +10,7 @@ const findExisting = (context, files) => {
 }
 
 module.exports = (api, options) => {
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpack(chainWebpack => {
     const getAssetPath = require('../util/getAssetPath')
     const isProd = process.env.NODE_ENV == 'production'
 
@@ -62,7 +62,7 @@ module.exports = (api, options) => {
     }
 
     function createCSSRule (lang, test, loader, ruleOtions) {
-      const baseRule = webpackConfig.module.rule(lang).test(test)
+      const baseRule = chainWebpack.module.rule(lang).test(test)
       const normalRule = baseRule.oneOf('normal')
       applyLoaders(normalRule)
 
@@ -134,12 +134,12 @@ module.exports = (api, options) => {
     createCSSRule('postcss', /\.p(ost)?css$/)
 
     if (shouldExtract) {
-      webpackConfig
+      chainWebpack
         .plugin('extract-css')
           .use(require('mini-css-extract-plugin'), [extractOptions])
 
       if (isProd) {
-        webpackConfig
+        chainWebpack
           .plugin('optimize-css')
             .use(require('@intervolga/optimize-cssnano-plugin'), [{
               sourceMap,

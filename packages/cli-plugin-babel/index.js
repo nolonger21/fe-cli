@@ -23,10 +23,10 @@ module.exports = (api, options) => {
   const entryIndexPath = resolveEntryIndex(api.getCwd())
   babel.loadPartialConfigSync({ filename: entryIndexPath })
   
-  api.chainWebpack(webpackConfig => {
-    webpackConfig.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'))
+  api.chainWebpack(chainWebpack => {
+    chainWebpack.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'))
 
-    const jsRule = webpackConfig.module
+    const jsRule = chainWebpack.module
       .rule('js')
         .test(/\.(m|j)?jsx?$/)
         .exclude

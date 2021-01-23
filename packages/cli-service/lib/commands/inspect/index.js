@@ -61,7 +61,7 @@ module.exports = (api, options) => {
           'chainWebpack()'
         )} (recommended).
     You can run ${chalk.green(
-    'vue-cli-service inspect'
+    'fe-cli-service inspect'
   )} without any arguments to inspect the full config and read these rules' config.`)
       }
     }

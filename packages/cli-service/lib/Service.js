@@ -8,15 +8,14 @@ const {
   resolvePkg, ensureSlash, removeSlash, fixPathPrefix, resolveConfig,
   checkTsProjectRun
 } = require('@etherfe/cli-utils')
-const path = require('path')
-const { defaults } = require('./util/defaultConfig')
-const serve = require('./commands/serve')
+const { defaultWebpackConfig, defaultFeConfig } = require('./util/defaultConfig')
 
 let service = null;
 
 const initService = (context = process.cwd()) => {
   const pkg = resolvePkg(context)
   const plugins = resolvePlugins(context, pkg)
+  const modes = resolvePluginModes(plugins)
 
   return {
     inited: false,
@@ -24,8 +23,18 @@ const initService = (context = process.cwd()) => {
     pkg,
     servicePkg: require('../package.json'),
     pkgDepend: Object.assign({}, pkg.devDependencies || {}, pkg.dependencies || {}),
-    projectConfig: resolveConfig(context, pkg),
-    modes: resolvePluginModes(plugins),
+    webpackConfig: resolveConfig({
+      paths: [
+        './fe.config.js',
+        './config/fe.config.js',
+        './webpack.config.js',
+        './config/webpack.config.js'
+      ], 
+      context, 
+      esm: pkg.type === 'module'
+    }),
+    feConfig: {},
+    modes,
     mode: '',
     plugins,
     commands: {},
@@ -56,6 +65,7 @@ module.exports = async () => {
   if(service) {
     service = service
   } else {
+    // load resource and ready service
     service = initService(projectContext);
     Object.assign(service, {
       resolveChainableWebpackConfig,
@@ -65,8 +75,8 @@ module.exports = async () => {
 
   const mode = args.mode || service.modes[command]
 
-  initPlugins(mode)
-
+  readyEnv(mode)
+  initPlugins()
   checkTsProjectRun(service, args)
 
   if(['serve', 'build'].includes(command)) {
@@ -75,27 +85,25 @@ module.exports = async () => {
 
   return runCommand(command, args, rawArgv);
 }
-  
-const initPlugins = (mode) => {
-  if (service.inited) return
-  service.inited = true
-  
+
+const readyEnv = (mode) => {
   service.mode = mode;
   const nodeRuningEnv = (mode === 'production' || mode === 'test') ? mode : 'development'
   process.env.NODE_ENV = nodeRuningEnv
   process.env.BABEL_ENV = nodeRuningEnv
-
   resolveEnvFiles(service.context, mode)
-
-  const projectConfig = resolveProjectConfig(service.projectConfig, service.context)
+}
+  
+const initPlugins = () => {
+  if (service.inited) return
+  service.inited = true
+  service.webpackConfig = resolveProjectWebpackConfig(service.webpackConfig, service.context)
   service.plugins.forEach(({ id, apply }) => {
-    apply(new PluginAPI(id, service), projectConfig)
+    const pluginConfig = Object.prototype.toString.call(service.feConfig) === '[object Object]' ? service.feConfig[id] || {} : {}
+    const pluginConfigMerge = Object.assign({}, service.feConfig['global'], pluginConfig)
+    apply(new PluginAPI(id, service), service.webpackConfig, pluginConfigMerge)
   })
-
-  if (service.projectConfig) {
-    service.webpackRawFns.push(service.projectConfig)
-  }
-  service.projectConfig = projectConfig
+  service.webpackRawFns.push(service.webpackConfig)
 }
 
 const runCheck = (args, rawArgv) => {
@@ -123,15 +131,15 @@ const runCommand = (command, args = {}, rawArgv = []) => {
 const resolvePlugins = (context, pkg) => {
   let plugins
   let builtInPlugins = loadPlugins([
-    './commands/serve',
-    './commands/build',
-    './commands/inspect',
-    './commands/help',
-
     './config/base',
     './config/assets',
     './config/css',
     './config/html',
+
+    './commands/serve',
+    './commands/build',
+    './commands/inspect',
+    './commands/help',
   ], __dirname)
 
   const pkgPlugins = loadPkgPlugins(pkg)
@@ -153,13 +161,28 @@ const resolvePluginModes = (plugins) => {
   return modes;
 }
 
-const resolveProjectConfig = (fileConfig, context)  =>{
-  if (typeof fileConfig === 'function') {
-    fileConfig = fileConfig()
+const resolveFeConfig = (feConfig) => {
+  const _defaultFeConfig = defaultFeConfig(service.context)
+  if (typeof feConfig === 'function') {
+    feConfig = feConfig(_defaultFeConfig)
   }
-  if (!fileConfig || typeof fileConfig !== 'object') {
-    error(`Error loading ${chalk.bold(fileConfigPath)}: should export an object or a function that returns object.`)
-    fileConfig = null
+  if (Object.prototype.toString.call(feConfig) === '[object Object]') {
+    service.feConfig = defaultsDeep(feConfig, _defaultFeConfig)
+  }
+}
+
+const resolveChainWebpackCallback = (chainWebpackCallback) => {
+  if (typeof chainWebpackCallback === 'function') {
+    service.webpackChainFns.push(chainWebpackCallback)
+  }
+}
+
+const resolveProjectWebpackConfig = (fileConfig, context) => {
+  if (typeof fileConfig === 'function') {
+    fileConfig = fileConfig({
+      config: resolveFeConfig,
+      chainWebpack: resolveChainWebpackCallback
+    })
   }
   
   let resolved = fileConfig || {}
@@ -170,15 +193,19 @@ const resolveProjectConfig = (fileConfig, context)  =>{
     removeSlash(resolved.output, 'path')
   }
 
-  return defaultsDeep(resolved, defaults(context))
+  return defaultsDeep(resolved, defaultWebpackConfig(context))
 }
 
+/** Executed last during development or build **/
+
+// Merge all the Chainable Webpack Config of the plug-in
 const resolveChainableWebpackConfig = () =>  {
   const chainableConfig = new Config()
   service.webpackChainFns.forEach(fn => fn(chainableConfig))
   return chainableConfig
 }
 
+// Merge all the Webpack Config of the plug-in
 const resolveWebpackConfig = (chainableConfig = service.resolveChainableWebpackConfig()) => {
   if (!service.inited) {
     throw new Error('Service must call init() before calling resolveWebpackConfig().')
@@ -193,6 +220,7 @@ const resolveWebpackConfig = (chainableConfig = service.resolveChainableWebpackC
       config = merge(config, fn)
     }
   })
+  
 
   if (config !== original) {
     cloneRuleNames(

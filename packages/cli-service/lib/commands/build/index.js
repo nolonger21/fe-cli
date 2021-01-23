@@ -28,25 +28,25 @@ module.exports = (api, options) => {
     const mode = api.service.mode
     logWithSpinner(`Building for ${mode}...`)
 
-    api.chainWebpack(webpackConfig => {
+    api.chainWebpack(chainWebpack => {
       if (process.env.NODE_ENV === 'production') {
         const outPutFileName = getAssetPath( options, `js/[name].[contenthash:8].js`)
-        webpackConfig
+        chainWebpack
           .mode('production')
           .output
             .filename(outPutFileName)
             .chunkFilename(outPutFileName)
 
-        webpackConfig
+        chainWebpack
           .devtool('source-map')
 
         const terserOptions = require('./terserOptions')
-        webpackConfig.optimization
+        chainWebpack.optimization
           .minimize(args.mini === null || args.mini === undefined)
           .minimizer('terser')
             .use(TerserPlugin, [terserOptions(options)])
 
-        webpackConfig.optimization
+        chainWebpack.optimization
           .splitChunks({
             cacheGroups: {
               defaultVendors: {

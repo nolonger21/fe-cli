@@ -94,8 +94,8 @@ class PluginAPI {
       'cli-service': require('../package.json').version,
       'cache-loader': require('cache-loader/package.json').version,
       env: process.env.NODE_ENV,
-      test: !!process.env.FE_CLI_TEST,
       config: [
+        fmtFunc(this.service.webpackConfig),
         fmtFunc(this.service.projectConfig)
       ]
     }

@@ -1,32 +1,36 @@
 module.exports = (api, options) => {
-  api.chainWebpack(webpackConfig => {
+
+  api.chainWebpack(chainWebpack => {
     const resolveLocal = require('../util/resolveLocal')
     const { resolveClientEnv, resolveEntryIndex } = require('@etherfe/cli-utils')
     
-    let entryFile = !Object.keys(options.entry).length ? resolveEntryIndex(api.service.context) : ''
-    let outPutPath = options.output.path
-    let publicPath = options.output.publicPath
-
+    const entryFile = !Object.keys(options.entry).length ? resolveEntryIndex(api.service.context) : ''
+    const outPutPath = options.output.path
+    const publicPath = options.output.publicPath
+    const clientEnv = resolveClientEnv(/^APP_/, {
+      BASE_URL: publicPath
+    })
+  
     // base config
-    webpackConfig
+    chainWebpack
       .mode('development')
       .context(api.service.context)
-      
+
     if(entryFile) {
-      webpackConfig
+      chainWebpack
         .entry('app')
           .add(entryFile)
           .end()
     }
 
-    webpackConfig
+    chainWebpack
       .output
         .path(api.resolve(outPutPath))
         .filename('[name].js')
         .publicPath(publicPath)
         .globalObject(`(typeof self !== 'undefined' ? self : this)`)
 
-    webpackConfig.resolve
+    chainWebpack.resolve
       .modules
         .add('node_modules')
         .add(api.resolve('node_modules'))
@@ -38,32 +42,32 @@ module.exports = (api, options) => {
       .alias
         .set('@', api.resolve('src'))
 
-    webpackConfig.module
+    chainWebpack.module
       .noParse(/jquery|lodash/)
 
-    webpackConfig.node
+    chainWebpack.node
       .merge({
         __filename: true,
         __dirname: true
       })
 
     // base plugins
-    webpackConfig
+    chainWebpack
       .plugin('define')
         .use(require('webpack/lib/DefinePlugin'), [
-          resolveClientEnv(options)
+          clientEnv
         ])
 
-    webpackConfig
+    chainWebpack
       .plugin('progress')
         .use(require('webpack/lib/ProgressPlugin'))
 
-    webpackConfig
+    chainWebpack
       .plugin('case-sensitive-paths')
         .use(require('case-sensitive-paths-webpack-plugin'))
 
     const { transformer, formatter } = require('../util/resolveLoaderError')
-    webpackConfig
+    chainWebpack
       .plugin('friendly-errors')
         .use(require('@soda/friendly-errors-webpack-plugin'), [{
           additionalTransformers: [transformer],
@@ -71,5 +75,4 @@ module.exports = (api, options) => {
         }])
   })
 
-  // api.resolveChainableWebpackConfig();
 }

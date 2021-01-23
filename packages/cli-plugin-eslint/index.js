@@ -28,7 +28,7 @@ module.exports = (api, options) => {
     ]
   )
   
-  api.chainWebpack(webpackConfig => {
+  api.chainWebpack(chainWebpack => {
     const eslintPath = resolveModule('eslint/package.json', cwd)
     let matchPatterns = /\.jsx?$/
     const extensions = [ '.mjs', '.cjs', '.js', '.jsx' ]
@@ -46,7 +46,7 @@ module.exports = (api, options) => {
         '!src/**/*.js'
       ]
     }
-    webpackConfig.module
+    chainWebpack.module
       .rule('eslint')
         .pre()
         .exclude
@@ -59,8 +59,8 @@ module.exports = (api, options) => {
           .options({
             extensions,
             ignorePattern,
-            // cache: true,
-            // cacheIdentifier,
+            cache: true,
+            cacheIdentifier,
             emitWarning: true,
             emitError: true,
             eslintPath: path.dirname(eslintPath),

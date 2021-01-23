@@ -42,20 +42,20 @@ module.exports = (api, options) => {
     const validateWebpackConfig = require('../../util/validateWebpackConfig')
     const getAssetPath = require('../../util/getAssetPath')
 
-    api.chainWebpack(webpackConfig => {
+    api.chainWebpack(chainWebpack => {
       if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
 
         const outPutFileName = getAssetPath(options, `js/[name].[fullhash:8].js`)
-        webpackConfig
+        chainWebpack
           .mode('development')
           .output
             .filename(outPutFileName)
             .chunkFilename(outPutFileName)
             
-        webpackConfig
+        chainWebpack
           .devtool('cheap-module-source-map')
 
-        webpackConfig
+        chainWebpack
           .plugin('hmr')
             .use(require('webpack/lib/HotModuleReplacementPlugin'))
       }
@@ -64,7 +64,6 @@ module.exports = (api, options) => {
     const webpackConfig = api.resolveWebpackConfig()
     const entryPages = webpackConfig.entry || {}
     const outPublicPath = webpackConfig.output.publicPath || '/'
-
     validateWebpackConfig(webpackConfig, api, options)
 
     const projectDevServerOptions = webpackConfig.devServer || {}
