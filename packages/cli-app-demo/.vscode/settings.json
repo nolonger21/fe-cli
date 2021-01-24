@@ -32,14 +32,14 @@
   "prettier.singleQuote": true,
 
   // 编辑器的prettier 格式化是否打开，这里关闭，使用eslint关联的prettier格式化
-  "prettier.enable": false,
+  "prettier.enable": true,
   // 保存的时候自动格式化，使用的为vscode本身的json/ts/js/html等，以及用于触发编辑器的prettier的修复,eslint tslint不控制
   "editor.formatOnSave": false,
 
   // eslint 检测是否打开
   "eslint.enable": true,
   // 该项eslint.format.enable等同于editor.formatOnSave，只是固定eslint为格式化程序
-  // "eslint.format.enable": true,
+  "eslint.format.enable": true,
   // 定制化第三方保存修复配置，推荐配置下面的
   "editor.codeActionsOnSave": {
     // "source.fixAll": true,

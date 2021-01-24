@@ -11,11 +11,12 @@ function ensureRelative (outputDir, _path) {
   }
 }
 
-module.exports = (api, options) => {
-  api.chainWebpack(chainWebpack => {
+module.exports = (api, options, pluginConfig) => {
 
+  api.chainWebpack(chainWebpack => {
     const isProd = process.env.NODE_ENV === 'production'
     const outputDir = api.resolve(options.output.path)
+    const publicPath = api.resolve(options.output.publicPath)
 
     // HTML plugin
     const { resolveClientEnv } = require('@etherfe/cli-utils')
@@ -60,12 +61,12 @@ module.exports = (api, options) => {
           }
         },
         resolveClientEnv(/^APP_/, {
-            BASE_URL: options.output.publicPath
+            BASE_URL: publicPath
           }, true /* raw */)
         )
       }
     }
-
+  
     if (isProd) {
       Object.assign(htmlOptions, {
         minify: {
@@ -195,6 +196,18 @@ module.exports = (api, options) => {
       })
     }
 
+    // CORS and Subresource Integrity
+    if (pluginConfig.crossorigin != null || pluginConfig.integrity) {
+      chainWebpack
+        .plugin('cors')
+          .use(require('../webpack/CorsPlugin'), [{
+            crossorigin: pluginConfig.crossorigin,
+            integrity: pluginConfig.integrity,
+            publicPath
+          }])
+    }
+  
+    // copy static assets in public/
     const publicDir = api.resolve('public')
     if (fs.existsSync(publicDir) && fs.readdirSync(publicDir).length) {
       chainWebpack

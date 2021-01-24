@@ -1,4 +1,4 @@
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   api.registerCommand(
     'inspect',
     {

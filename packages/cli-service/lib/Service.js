@@ -162,6 +162,7 @@ const resolvePluginModes = (plugins) => {
 }
 
 const resolveFeConfig = (feConfig) => {
+  if (!feConfig) return
   const _defaultFeConfig = defaultFeConfig(service.context)
   if (typeof feConfig === 'function') {
     feConfig = feConfig(_defaultFeConfig)
@@ -180,14 +181,14 @@ const resolveChainWebpackCallback = (chainWebpackCallback) => {
 const resolveProjectWebpackConfig = (fileConfig, context) => {
   if (typeof fileConfig === 'function') {
     fileConfig = fileConfig({
-      config: resolveFeConfig,
+      feConfig: resolveFeConfig,
       chainWebpack: resolveChainWebpackCallback
     })
   }
   
   let resolved = fileConfig || {}
 
-  if(typeof resolved.output === 'object') {
+  if (Object.prototype.toString.call(resolved.output) === '[object Object]') {
     ensureSlash(resolved.output, 'publicPath')
     fixPathPrefix(resolved.output, 'publicPath')
     removeSlash(resolved.output, 'path')

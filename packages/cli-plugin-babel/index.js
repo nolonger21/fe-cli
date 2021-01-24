@@ -3,6 +3,7 @@ const babel = require('@babel/core')
 const { isWindows, os, resolveEntryIndex } = require('@etherfe/cli-utils')
 
 function genTranspileDepRegex (transpileDependencies) {
+  if (!Array.isArray(transpileDependencies)) return
   const deps = transpileDependencies.map(dep => {
     if (typeof dep === 'string') {
       const depPath = path.join('node_modules', dep, '/')
@@ -16,9 +17,9 @@ function genTranspileDepRegex (transpileDependencies) {
   return deps.length ? new RegExp(deps.join('|')) : null
 }
 
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   const useThreads = process.env.NODE_ENV === 'production'
-  const transpileDepRegex = genTranspileDepRegex([])
+  const transpileDepRegex = genTranspileDepRegex(pluginConfig.transpileDependencies)
 
   const entryIndexPath = resolveEntryIndex(api.getCwd())
   babel.loadPartialConfigSync({ filename: entryIndexPath })
@@ -82,4 +83,7 @@ module.exports = (api, options) => {
         })
   })
 
+}
+module.exports.defaultConfig = {
+  transpileDependencies: []
 }

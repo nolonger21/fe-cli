@@ -13,7 +13,7 @@ const defaults = {
   https: false
 }
 
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   api.registerCommand('serve', {
     description: 'start development server',
     usage: 'fe-cli-service serve [options] [entry]',
@@ -45,7 +45,7 @@ module.exports = (api, options) => {
     api.chainWebpack(chainWebpack => {
       if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
 
-        const outPutFileName = getAssetPath(options, `js/[name].[fullhash:8].js`)
+        const outPutFileName = getAssetPath(pluginConfig.assetsDir, `js/[name].[fullhash:8].js`)
         chainWebpack
           .mode('development')
           .output
@@ -197,7 +197,12 @@ module.exports = (api, options) => {
             const pageUri = (projectDevServerOptions.openPage && typeof projectDevServerOptions.openPage === 'string')
               ? projectDevServerOptions.openPage
               : ''
-            openBrowser(localUrlForBrowser + pageUri)
+            const isHttp = pageUri.startsWith('http')
+            if (isHttp) {
+              openBrowser(pageUri)
+            } else {
+              openBrowser(localUrlForBrowser + pageUri)
+            }
           }
 
           resolve({

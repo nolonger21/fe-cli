@@ -1,7 +1,7 @@
 const path = require('path')
 
-module.exports = function getAssetPath (options, filePath) {
-  return options.assetDir
-    ? path.posix.join(options.assetDir, filePath)
-    : filePath
+module.exports = function getAssetPath (assetsDir, filePath) {
+  return assetsDir ? path.posix.join(
+    assetsDir.replace(/^\/*/, "").replace(/^\.\//, "")
+  , filePath) : filePath
 }

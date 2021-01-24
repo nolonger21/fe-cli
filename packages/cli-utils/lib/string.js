@@ -1,6 +1,6 @@
 exports.ensureSlash = (config, key) => {
   if (typeof config[key] === "string") {
-    config[key] = val.replace(/([^/])$/, "$1/");
+    config[key] = config[key].replace(/([^/])$/, "$1/");
   }
 };
 

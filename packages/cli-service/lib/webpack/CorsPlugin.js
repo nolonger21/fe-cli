@@ -1,3 +1,15 @@
+
+var HtmlWebpackPlugin;
+
+try {
+  // eslint-disable-next-line global-require
+  HtmlWebpackPlugin = require('html-webpack-plugin');
+} catch (e) {
+  if (!(e instanceof Error) || e.code !== 'MODULE_NOT_FOUND') {
+    throw e;
+  }
+}
+// support webpack 4/5
 module.exports = class CorsPlugin {
   constructor ({ publicPath, crossorigin, integrity }) {
     this.crossorigin = crossorigin
@@ -22,8 +34,13 @@ module.exports = class CorsPlugin {
         }
       }
 
-      compilation.hooks.htmlWebpackPluginAlterAssetTags.tap(ID, data => {
+      const alterAssetTagGroupsCallback = _data => {
+        const data = {
+          head: _data.headTags || _data.head,
+          body: _data.bodyTags || _data.body
+        }
         const tags = [...data.head, ...data.body]
+
         if (this.crossorigin != null) {
           tags.forEach(tag => {
             if (tag.tagName === 'script' || tag.tagName === 'link') {
@@ -46,10 +63,6 @@ module.exports = class CorsPlugin {
             }
           })
 
-          // when using SRI, Chrome somehow cannot reuse
-          // the preloaded resource, and causes the files to be downloaded twice.
-          // this is a Chrome bug (https://bugs.chromium.org/p/chromium/issues/detail?id=677022)
-          // for now we disable preload if SRI is used.
           data.head = data.head.filter(tag => {
             return !(
               tag.tagName === 'link' &&
@@ -57,11 +70,22 @@ module.exports = class CorsPlugin {
             )
           })
         }
-      })
+      }
 
-      compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(ID, data => {
+      const afterTemplateExecutionCallback = data => {
         data.html = data.html.replace(/\scrossorigin=""/g, ' crossorigin')
-      })
+      }
+
+      if (HtmlWebpackPlugin && HtmlWebpackPlugin.getHooks) { // HtmlWebpackPlugin >= 4
+        const hooks = HtmlWebpackPlugin.getHooks(compilation)
+        hooks.alterAssetTagGroups.tap(ID, alterAssetTagGroupsCallback)
+        hooks.afterTemplateExecution.tap(ID, afterTemplateExecutionCallback)
+
+      } else {
+        compilation.hooks.htmlWebpackPluginAlterAssetTags.tap(ID, alterAssetTagGroupsCallback)
+        compilation.hooks.htmlWebpackPluginAfterHtmlProcessing.tap(ID, afterTemplateExecutionCallback)
+      }
+
     })
   }
 }

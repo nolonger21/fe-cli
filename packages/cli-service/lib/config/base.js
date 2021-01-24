@@ -1,5 +1,5 @@
-module.exports = (api, options) => {
-
+module.exports = (api, options, pluginConfig) => {
+  
   api.chainWebpack(chainWebpack => {
     const resolveLocal = require('../util/resolveLocal')
     const { resolveClientEnv, resolveEntryIndex } = require('@etherfe/cli-utils')

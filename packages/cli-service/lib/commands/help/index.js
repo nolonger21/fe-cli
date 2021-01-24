@@ -1,7 +1,7 @@
 const { chalk } = require('@etherfe/cli-utils')
 const getPadLength = require('../../util/getPadLength')
 
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   api.registerCommand('help', args => {
     const commandName = args._[0]
     if (!commandName) {

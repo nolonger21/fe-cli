@@ -18,66 +18,46 @@ exports.defaultWebpackConfig = (context) => {
   }
 }
 
+function hasMultipleCores () {
+  try {
+    return require('os').cpus().length > 1
+  } catch (e) {
+    return false
+  }
+}
+
 exports.defaultFeConfig = (context) => ({
-  // // project deployment base
-  // publicPath: '/',
 
-  // // where to output built files
-  // outputDir: 'dist',
+  // where to put static assets (js/css/img/font/...)
+  assetsDir: '',
 
-  // // where to put static assets (js/css/img/font/...)
-  // assetsDir: '',
+  // whether filename will contain hash part
+  filenameHashing: true,
 
-  // // filename for index.html (relative to outputDir)
-  // indexPath: 'index.html',
+  // boolean, use full build?
+  runtimeCompiler: false,
 
-  // // whether filename will contain hash part
-  // filenameHashing: true,
+  // deps to transpile
+  transpileDependencies: [
+    /* string or regex */
+  ],
 
-  // // boolean, use full build?
-  // runtimeCompiler: false,
+  // sourceMap for production build?
+  productionSourceMap: true,
 
-  // // deps to transpile
-  // transpileDependencies: [
-  //   /* string or regex */
-  // ],
+  // use thread-loader for babel & TS in production build
+  // enabled by default if the machine has more than 1 cores
+  parallel: hasMultipleCores(),
 
-  // // sourceMap for production build?
-  // productionSourceMap: !process.env.VUE_CLI_TEST,
+  // <script type="module" crossorigin="use-credentials">
+  crossorigin: undefined,
 
-  // // use thread-loader for babel & TS in production build
-  // // enabled by default if the machine has more than 1 cores
-  // parallel: hasMultipleCores(),
+  // subresource integrity
+  integrity: false,
 
-  // // multi-page config
-  // pages: undefined,
-
-  // // <script type="module" crossorigin="use-credentials">
-  // // #1656, #1867, #2025
-  // crossorigin: undefined,
-
-  // // subresource integrity
-  // integrity: false,
-
-  // css: {
-  //   // extract: true,
-  //   // modules: false,
-  //   // sourceMap: false,
-  //   // loaderOptions: {}
-  // },
-
-  // // whether to use eslint-loader
-  // lintOnSave: 'default',
-
-  // devServer: {
-  //   /*
-  //   open: process.platform === 'darwin',
-  //   host: '0.0.0.0',
-  //   port: 8080,
-  //   https: false,
-  //   hotOnly: false,
-  //   proxy: null, // string | Object
-  //   before: app => {}
-  // */
-  // }
+  css: {
+    // extract: true,
+    // sourceMap: false,
+    // loaderOptions: {}
+  }
 })

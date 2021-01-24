@@ -1,5 +1,5 @@
 
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   api.registerCommand('build', 
   {
     description: 'build for production',
@@ -29,42 +29,42 @@ module.exports = (api, options) => {
     logWithSpinner(`Building for ${mode}...`)
 
     api.chainWebpack(chainWebpack => {
-      if (process.env.NODE_ENV === 'production') {
-        const outPutFileName = getAssetPath( options, `js/[name].[contenthash:8].js`)
-        chainWebpack
-          .mode('production')
-          .output
-            .filename(outPutFileName)
-            .chunkFilename(outPutFileName)
+      if (process.env.NODE_ENV !== 'production') return 
+      const outputAssetName = `${pluginConfig.filenameHashing ? '.[contenthash:8]' : ''}.js`
+      const outPutFileName = getAssetPath(pluginConfig.assetsDir, `js/[name]${outputAssetName}`)
+      chainWebpack
+        .mode('production')
+        .output
+          .filename(outPutFileName)
+          .chunkFilename(outPutFileName)
 
-        chainWebpack
-          .devtool('source-map')
+      chainWebpack
+        .devtool(pluginConfig.productionSourceMap ? 'source-map' : false)
 
-        const terserOptions = require('./terserOptions')
-        chainWebpack.optimization
-          .minimize(args.mini === null || args.mini === undefined)
-          .minimizer('terser')
-            .use(TerserPlugin, [terserOptions(options)])
+      const terserOptions = require('./terserOptions')
+      chainWebpack.optimization
+        .minimize(args.mini === null || args.mini === undefined)
+        .minimizer('terser')
+          .use(TerserPlugin, [terserOptions(pluginConfig)])
 
-        chainWebpack.optimization
-          .splitChunks({
-            cacheGroups: {
-              defaultVendors: {
-                name: `chunk-vendors`,
-                test: /[\\/]node_modules[\\/]/,
-                priority: -10,
-                chunks: 'initial'
-              },
-              common: {
-                name: `chunk-common`,
-                minChunks: 2,
-                priority: -20,
-                chunks: 'initial',
-                reuseExistingChunk: true
-              }
+      chainWebpack.optimization
+        .splitChunks({
+          cacheGroups: {
+            defaultVendors: {
+              name: `chunk-vendors`,
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10,
+              chunks: 'initial'
+            },
+            common: {
+              name: `chunk-common`,
+              minChunks: 2,
+              priority: -20,
+              chunks: 'initial',
+              reuseExistingChunk: true
             }
-          })
-      }
+          }
+        })
     })
 
     api.configureWebpack(webpackConfig => {

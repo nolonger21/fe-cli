@@ -1,14 +1,4 @@
-const { os } = require('@etherfe/cli-utils')
-
-function hasMultipleCores () {
-  try {
-    return os.cpus().length > 1
-  } catch (e) {
-    return false
-  }
-}
-
-module.exports = options => ({
+module.exports = pluginConfig => ({
   terserOptions: {
     compress: {
       // turn off flags with small gains to speed up minification
@@ -45,8 +35,8 @@ module.exports = options => ({
       safari10: true
     }
   },
-  sourceMap: true,
+  sourceMap: pluginConfig.productionSourceMap,
   cache: true,
-  parallel: hasMultipleCores(),
+  parallel: pluginConfig.parallel,
   extractComments: false
 })

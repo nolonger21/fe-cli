@@ -1,4 +1,4 @@
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   api.chainWebpack((chainWebpack) => {
     
     chainWebpack.resolve
@@ -6,8 +6,9 @@ module.exports = (api, options) => {
         .merge(['.vue'])
         .end()
 
+    const runtimeVersion = pluginConfig.runtimeCompiler ? '.runtime' : ''
     chainWebpack.resolve.alias
-      .set('vue$', 'vue/dist/vue.esm.js')
+      .set('vue$', `vue/dist/vue${runtimeVersion}.esm.js`)
 
     const vueLoaderCacheIdentifier = {
         'vue-loader': require('vue-loader/package.json').version

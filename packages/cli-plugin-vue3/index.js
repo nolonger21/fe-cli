@@ -6,6 +6,9 @@ module.exports = (api, options) => {
         .merge(['.vue'])
         .end()
   
+    chainWebpack.resolve.alias
+      .set('vue$', pluginConfig.runtimeCompiler ? 'vue/dist/vue.esm-bundler.js' : '@vue/runtime-dom')
+
     const vueLoaderCacheConfig = api.genCacheConfig('vue-loader', {
       'vue-loader': require('vue-loader/package.json').version,
       '@vue/compiler-sfc': require('@vue/compiler-sfc/package.json').version

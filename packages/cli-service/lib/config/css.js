@@ -9,20 +9,28 @@ const findExisting = (context, files) => {
   }
 }
 
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
+
   api.chainWebpack(chainWebpack => {
     const getAssetPath = require('../util/getAssetPath')
     const isProd = process.env.NODE_ENV == 'production'
 
-    const { sourceMap = false } = {};
+    const {
+      extract = isProd,
+      sourceMap = false,
+      loaderOptions = {}
+    } = pluginConfig.css || {}
 
-    const shouldExtract = isProd
-    const filename = getAssetPath(options, `css/[name].[contenthash:8].css`)
+    // When it's not extracted, the CSS is in JS, and it's rendered dynamically
+    const shouldExtract = extract
+    const needInlineMinification = isProd && !shouldExtract
+    const outputAssetName = `${pluginConfig.filenameHashing ? '.[contenthash:8]' : ''}.css`
+    const filename = getAssetPath(pluginConfig.assetsDir, `css/[name]${outputAssetName}`)
+  
     const extractOptions = {
       filename,
       chunkFilename: filename
     }
-    const loaderOptions = {}
 
     // use relative publicPath in extracted CSS based on extract location
     const cssPublicPath = '../'.repeat(
@@ -32,7 +40,7 @@ module.exports = (api, options) => {
             .length - 1
       )
 
-    const hasPostCSSConfig = !!(api.service.pkg.postcss || findExisting(api.resolve('.'), [
+    const hasPostCSSConfig = !!(loaderOptions.postcss || api.service.pkg.postcss || findExisting(api.resolve('.'), [
       '.postcssrc',
       '.postcssrc.js',
       'postcss.config.js',
@@ -50,14 +58,14 @@ module.exports = (api, options) => {
       }
     }
 
-    const needInlineMinification = isProd && !shouldExtract
     const cssnanoOptions = {
       preset: ['default', {
         mergeLonghand: false,
         cssDeclarationSorter: false
       }]
     }
-    if (sourceMap) {
+
+    if (pluginConfig.productionSourceMap && sourceMap) {
       cssnanoOptions.map = { inline: false }
     }
 
@@ -86,14 +94,14 @@ module.exports = (api, options) => {
         rule
           .use('css-loader')
           .loader(require.resolve('css-loader'))
-          .options({
+          .options(Object.assign({
             sourceMap,
             importLoaders: (
               (needInlineMinification ? 1 : 0) +  // cssnano minification
               1 + // postcss-loader
               (loader ? 1 : 0) // other loader
             )
-          })
+          }, loaderOptions.css))
 
         if (needInlineMinification) {
           rule
@@ -127,10 +135,14 @@ module.exports = (api, options) => {
     }
 
     createCSSRule('css', /\.css$/)
-    createCSSRule('less', /\.less$/, 'less-loader')
-    createCSSRule('scss', /\.scss$/, 'sass-loader', { implementation: require('sass') })
-    createCSSRule('sass', /\.sass$/, 'sass-loader', { implementation: require('sass'), sassOptions: { indentedSyntax: true } })
-    createCSSRule('stylus', /\.styl(us)?$/, 'stylus-loader', { preferPathResolver: 'webpack'})
+    createCSSRule('less', /\.less$/, 'less-loader', loaderOptions.less)
+    createCSSRule('scss', /\.scss$/, 'sass-loader', Object.assign({ implementation: require('sass') },loaderOptions.scss))
+    createCSSRule('sass', /\.sass$/, 'sass-loader', Object.assign(
+      { implementation: require('sass') },
+      loaderOptions.sass,
+      { sassOptions: Object.assign({}, loaderOptions.sass && loaderOptions.sass.sassOptions, { indentedSyntax: true })}
+    ))
+    createCSSRule('stylus', /\.styl(us)?$/, 'stylus-loader', Object.assign({ preferPathResolver: 'webpack' }, loaderOptions.stylus))
     createCSSRule('postcss', /\.p(ost)?css$/)
 
     if (shouldExtract) {
@@ -142,7 +154,7 @@ module.exports = (api, options) => {
         chainWebpack
           .plugin('optimize-css')
             .use(require('@intervolga/optimize-cssnano-plugin'), [{
-              sourceMap,
+              sourceMap: pluginConfig.productionSourceMap && sourceMap,
               cssnanoOptions
             }])
       }

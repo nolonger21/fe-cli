@@ -1,7 +1,9 @@
 module.exports = (api, options, pluginConfig) => {
+  
   api.chainWebpack(chainWebpack => {
     const getAssetPath = require('../util/getAssetPath')
     const inlineLimit = pluginConfig.inlineLimit || 4096
+    const outputAssetName = `${pluginConfig.filenameHashing ? '.[hash:8]' : ''}.[ext]`
 
     const genUrlLoaderOptions = dir => {
       return {
@@ -9,7 +11,7 @@ module.exports = (api, options, pluginConfig) => {
         fallback: {
           loader: require.resolve('file-loader'),
           options: {
-            name: getAssetPath(options, `${dir}/[name].[contenthash:8].[ext]`)
+            name: getAssetPath(pluginConfig.assetsDir, `${dir}/[name]${outputAssetName}`)
           }
         }
       }
@@ -37,4 +39,10 @@ module.exports = (api, options, pluginConfig) => {
           .options(genUrlLoaderOptions('fonts'))
   })
 
+}
+
+module.exports.defaultConfig = {
+  assetsDir: '',
+  filenameHashing: true,
+  inlineLimit: 4096
 }
