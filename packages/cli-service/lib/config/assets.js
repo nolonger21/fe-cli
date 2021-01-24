@@ -1,5 +1,5 @@
 module.exports = (api, options, pluginConfig) => {
-  
+
   api.chainWebpack(chainWebpack => {
     const getAssetPath = require('../util/getAssetPath')
     const inlineLimit = pluginConfig.inlineLimit || 4096
@@ -42,7 +42,5 @@ module.exports = (api, options, pluginConfig) => {
 }
 
 module.exports.defaultConfig = {
-  assetsDir: '',
-  filenameHashing: true,
   inlineLimit: 4096
 }

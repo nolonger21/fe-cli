@@ -37,6 +37,6 @@ module.exports = pluginConfig => ({
   },
   sourceMap: pluginConfig.productionSourceMap,
   cache: true,
-  parallel: pluginConfig.parallel,
+  parallel: !!pluginConfig.parallel,
   extractComments: false
 })

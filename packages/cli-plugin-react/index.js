@@ -1,4 +1,4 @@
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   const { error, warn } = require('@etherfe/cli-utils')
 
   api.chainWebpack((chainWebpack) => {

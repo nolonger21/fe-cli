@@ -228,3 +228,11 @@ module.exports = (api, options, pluginConfig) => {
     }
   })
 }
+
+module.exports.defaultConfig = {
+  // <script type="module" crossorigin="use-credentials">
+  crossorigin: undefined,
+
+  // subresource integrity
+  integrity: false,
+}

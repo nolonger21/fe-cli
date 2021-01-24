@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   const { error, info, warn, resolveModule, loadModule, tryRequire } = require('@etherfe/cli-utils')
   const cwd = api.getCwd()
   const eslintPkg = loadModule('eslint/package.json', cwd, true)
@@ -64,7 +64,7 @@ module.exports = (api, options) => {
             emitWarning: true,
             emitError: true,
             eslintPath: path.dirname(eslintPath),
-            formatter: 'stylish'
+            formatter: pluginConfig.formatter || 'stylish'
           })
   })
 
@@ -128,4 +128,8 @@ module.exports = (api, options) => {
       triggerTip(tipMessage)
     }
   })
+}
+
+module.exports.defaultConfig = {
+  formatter: 'stylish'
 }

@@ -3,8 +3,8 @@ const fs = require('fs')
 
 const { semver, loadModule, os, warn, tryRequire } = require('@etherfe/cli-utils')
 
-module.exports = (api, options) => {
-  const useThreads = process.env.NODE_ENV === 'production'
+module.exports = (api, options, pluginConfig) => {
+  const useThreads = process.env.NODE_ENV === 'production' && !!pluginConfig.parallel
 
   api.chainWebpack((chainWebpack) => {
     chainWebpack.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'))
@@ -145,4 +145,8 @@ module.exports = (api, options) => {
       triggerTip(tipMessage)
     }
   })
+}
+
+module.exports.defaultConfig = {
+  parallel: undefined
 }

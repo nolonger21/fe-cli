@@ -16,8 +16,12 @@ exports.joinOfficialPluginName = id => `@etherfe/cli-plugin-${id}`
 
 exports.toShortPluginId = id => id.replace(pluginRE, '')
 
-exports.resolvePluginId = id => {
-  if (pluginRE.test(id)) return id
+exports.resolvePluginId = (_id, supportLocal) => {
+  let id = _id
+  if (supportLocal) {
+    id = id.replace('build-in', '').replace('local:', '')
+  }
+  if (pluginRE.test(id)) return _id
   return `fe-cli-plugin-${id}`
 }
 
@@ -26,25 +30,43 @@ exports.matchesPluginId = (input, full) => {
   return ( full === input || short === input);
 }
 
+exports.idFix = (id) => {
+  return id.replace(/^.\//, 'built-in:').replace(/^\//, 'local:')
+}
 exports.loadPlugin = (id, context) => {
   let targetPath = '';
   if (context) {
     targetPath = path.join(context, id)
   }
   return {
-    id: id.replace(/^.\//, 'built-in:').replace(/^\//, 'local:'),
+    id: exports.idFix(id),
     apply: require(targetPath || id)
   }
 }
 
-exports.loadPlugins = (pluginPaths = [], context) => {
-  return pluginPaths.map(path => exports.loadPlugin(path, context))
+exports.loadPlugins = (pluginPaths = [], context, callback) => {
+  return pluginPaths.filter(path => {
+    let pass = true
+    if (typeof callback === 'function') {
+      const res = callback(exports.idFix(path))
+      pass = res !== undefined ? res : pass
+    }
+    return pass
+  }).map(path => exports.loadPlugin(path, context))
 }
 
-exports.loadPkgPlugins = (pkg = {}) => {
+exports.loadPkgPlugins = (pkg = {}, callback) => {
   const projectPlugins = Object.keys(pkg.devDependencies || {})
   .concat(Object.keys(pkg.dependencies || {}))
-  .filter(exports.isPlugin)
+  .filter(path => {
+    let pass = true
+    let isPlugin = exports.isPlugin(path)
+    if (typeof callback === 'function' && isPlugin) {
+      const res = callback(path)
+      pass = res !== undefined ? res : pass
+    }
+    return pass && isPlugin
+  })
   .map(id => {
     if (pkg.optionalDependencies && id in pkg.optionalDependencies) {
       let apply = () => {}
@@ -60,15 +82,25 @@ exports.loadPkgPlugins = (pkg = {}) => {
   return projectPlugins
 }
 
-exports.loadLocalPlugins = (context) => {
+exports.loadLocalPlugins = (context, callback) => {
   let localPlugins = []
-  let pluginPaths = []
   const localPluginPath = path.resolve(context, 'plugins')
   const fs = require("fs");
   if (fs.existsSync(localPluginPath)) {
-    pluginPaths = fs.readdirSync(localPluginPath).filter(exports.isPlugin)
+    localPlugins = fs.readdirSync(localPluginPath).filter(path => {
+      let pass = true
+      if (typeof callback === 'function') {
+        const res = callback('local:' + path)
+        pass = res !== undefined ? res : pass
+      }
+      return pass && exports.isPlugin(path)
+    }).map(_path => {
+      let targetPath = path.join(localPluginPath, _path)
+      return {
+        id: 'local:' + _path,
+        apply: require(targetPath)
+      }
+    })
   }
-  localPlugins = exports.loadPlugins(pluginPaths, localPluginPath)
-  
   return localPlugins
 }

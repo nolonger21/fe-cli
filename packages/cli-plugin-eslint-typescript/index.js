@@ -1,5 +1,5 @@
 
-module.exports = (api, options) => {
+module.exports = (api, options, pluginConfig) => {
   const { error, warn, tryRequire, loadModule, semver } = require('@etherfe/cli-utils')
 
   api.chainWebpack((chainWebpack) => {
@@ -42,8 +42,6 @@ module.exports = (api, options) => {
       process.exit(1)
     }
 
-
-    const useThreads = process.env.NODE_ENV === 'production'
     const extensions = {}
     if(api.hasPlugin('vue') || api.hasPlugin('vue3')) {
       const vue = loadModule('vue', api.service.context)
@@ -69,7 +67,7 @@ module.exports = (api, options) => {
               global: false
             }
           },
-          formatter: 'basic',
+          formatter: pluginConfig.formatter || 'basic',
         },
       ])
 
@@ -139,3 +137,7 @@ module.exports = (api, options) => {
     }
   })
 };
+
+module.exports.defaultConfig = {
+  formatter: 'basic'
+}

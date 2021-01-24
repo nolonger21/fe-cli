@@ -161,3 +161,17 @@ module.exports = (api, options, pluginConfig) => {
     }
   })
 }
+
+module.exports.defaultConfig = {
+  css: {
+    extract: true,
+    sourceMap: false,
+    loaderOptions: {
+      css: undefined,
+      less: undefined,
+      scss: undefined,
+      stylus: undefined,
+      postcss: undefined
+    }
+  }
+}

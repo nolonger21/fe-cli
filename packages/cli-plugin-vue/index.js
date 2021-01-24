@@ -85,3 +85,8 @@ module.exports = (api, options, pluginConfig) => {
 
   });
 };
+
+module.exports.defaultConfig = {
+  // boolean, use full build?
+  runtimeCompiler: false
+}

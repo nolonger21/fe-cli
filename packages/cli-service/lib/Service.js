@@ -4,7 +4,7 @@ const PluginAPI = require('./PluginAPI')
 const defaultsDeep = require('lodash.defaultsdeep')
 const {
   minimist, chalk, warn, error, resolveEnvFiles,
-  loadPlugins, loadPkgPlugins, loadLocalPlugins,
+  loadPlugins, loadPkgPlugins, loadLocalPlugins, resolvePluginId,
   resolvePkg, ensureSlash, removeSlash, fixPathPrefix, resolveConfig,
   checkTsProjectRun
 } = require('@etherfe/cli-utils')
@@ -12,9 +12,36 @@ const { defaultWebpackConfig, defaultFeConfig } = require('./util/defaultConfig'
 
 let service = null;
 
-const initService = (context = process.cwd()) => {
+
+const setPluginsToSkip = (args, webpackConfig) => {
+  let _skipPlugins = args['skip-plugins']
+  _skipPlugins = _skipPlugins ? _skipPlugins.split(',') : []
+  if (typeof webpackConfig === 'function') {
+    const { skipPlugins = [] } = webpackConfig || {} 
+    if(Array.isArray(skipPlugins)) {
+      _skipPlugins = skipPlugins.concat(_skipPlugins)
+    }
+  }
+  const pluginsToSkip = new Set(_skipPlugins.map(id => resolvePluginId(id, true)))
+
+  return pluginsToSkip
+}
+
+const initService = (context, args) => {
   const pkg = resolvePkg(context)
-  const plugins = resolvePlugins(context, pkg)
+  const webpackConfig = resolveConfig({
+    paths: [
+      './fe.config.js',
+      './config/fe.config.js',
+      './webpack.config.js',
+      './config/webpack.config.js'
+    ], 
+    context, 
+    esm: pkg.type === 'module'
+  })
+  // --skip-plugins arg may have plugins that should be skipped during init()
+  const pluginsToSkip = setPluginsToSkip(args, webpackConfig)
+  const plugins = resolvePlugins(context, pkg, pluginsToSkip)
   const modes = resolvePluginModes(plugins)
 
   return {
@@ -23,20 +50,12 @@ const initService = (context = process.cwd()) => {
     pkg,
     servicePkg: require('../package.json'),
     pkgDepend: Object.assign({}, pkg.devDependencies || {}, pkg.dependencies || {}),
-    webpackConfig: resolveConfig({
-      paths: [
-        './fe.config.js',
-        './config/fe.config.js',
-        './webpack.config.js',
-        './config/webpack.config.js'
-      ], 
-      context, 
-      esm: pkg.type === 'module'
-    }),
+    webpackConfig,
     feConfig: {},
     modes,
     mode: '',
     plugins,
+    pluginsToSkip,
     commands: {},
     webpackChainFns: [],
     webpackRawFns: [],
@@ -46,9 +65,8 @@ const initService = (context = process.cwd()) => {
 }
 
 module.exports = async () => {
+  const context = process.cwd()
   const rawArgv = process.argv.slice(2)
-  const projectContext = process.cwd()
-
   const args = minimist(rawArgv, {
     boolean: [
       // build
@@ -66,7 +84,7 @@ module.exports = async () => {
     service = service
   } else {
     // load resource and ready service
-    service = initService(projectContext);
+    service = initService(context, args);
     Object.assign(service, {
       resolveChainableWebpackConfig,
       resolveWebpackConfig
@@ -100,7 +118,7 @@ const initPlugins = () => {
   service.webpackConfig = resolveProjectWebpackConfig(service.webpackConfig, service.context)
   service.plugins.forEach(({ id, apply }) => {
     const pluginConfig = Object.prototype.toString.call(service.feConfig) === '[object Object]' ? service.feConfig[id] || {} : {}
-    const pluginConfigMerge = Object.assign({}, service.feConfig['global'], pluginConfig)
+    const pluginConfigMerge = defaultsDeep(pluginConfig, service.feConfig['global'])
     apply(new PluginAPI(id, service), service.webpackConfig, pluginConfigMerge)
   })
   service.webpackRawFns.push(service.webpackConfig)
@@ -128,8 +146,13 @@ const runCommand = (command, args = {}, rawArgv = []) => {
   return commandItem.fn(args, rawArgv)
 }
 
-const resolvePlugins = (context, pkg) => {
+const resolvePlugins = (context, pkg, pluginsToSkip) => {
   let plugins
+
+  const skipPluginCallback = (id) => {
+    return !pluginsToSkip.has(id)
+  }
+
   let builtInPlugins = loadPlugins([
     './config/base',
     './config/assets',
@@ -140,12 +163,12 @@ const resolvePlugins = (context, pkg) => {
     './commands/build',
     './commands/inspect',
     './commands/help',
-  ], __dirname)
+  ], __dirname, skipPluginCallback)
 
-  const pkgPlugins = loadPkgPlugins(pkg)
+  const pkgPlugins = loadPkgPlugins(pkg, skipPluginCallback)
   plugins = builtInPlugins.concat(pkgPlugins)
 
-  const localPlugins = loadLocalPlugins(context)
+  const localPlugins = loadLocalPlugins(context,skipPluginCallback)
   plugins = plugins.concat(localPlugins)
 
   return plugins
@@ -163,12 +186,23 @@ const resolvePluginModes = (plugins) => {
 
 const resolveFeConfig = (feConfig) => {
   if (!feConfig) return
+
   const _defaultFeConfig = defaultFeConfig(service.context)
+
+  service.plugins.forEach(({ id, apply }) => {
+    const { defaultConfig } = apply || {};
+    if (Object.prototype.toString.call(defaultConfig) === '[object Object]') {
+      _defaultFeConfig[id] = defaultConfig
+    }
+  })
+
   if (typeof feConfig === 'function') {
     feConfig = feConfig(_defaultFeConfig)
   }
   if (Object.prototype.toString.call(feConfig) === '[object Object]') {
     service.feConfig = defaultsDeep(feConfig, _defaultFeConfig)
+  } else {
+    service.feConfig = _defaultFeConfig
   }
 }
 

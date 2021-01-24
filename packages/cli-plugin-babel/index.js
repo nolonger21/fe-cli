@@ -18,7 +18,7 @@ function genTranspileDepRegex (transpileDependencies) {
 }
 
 module.exports = (api, options, pluginConfig) => {
-  const useThreads = process.env.NODE_ENV === 'production'
+  const useThreads = process.env.NODE_ENV === 'production' && !!pluginConfig.parallel
   const transpileDepRegex = genTranspileDepRegex(pluginConfig.transpileDependencies)
 
   const entryIndexPath = resolveEntryIndex(api.getCwd())
@@ -84,6 +84,11 @@ module.exports = (api, options, pluginConfig) => {
   })
 
 }
+
 module.exports.defaultConfig = {
-  transpileDependencies: []
+  // deps to transpile
+  transpileDependencies: [
+    /* string or regex */
+  ],
+  parallel: undefined
 }

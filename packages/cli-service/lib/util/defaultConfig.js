@@ -27,37 +27,19 @@ function hasMultipleCores () {
 }
 
 exports.defaultFeConfig = (context) => ({
+  global: {
+    // where to put static assets (js/css/img/font/...)
+    assetsDir: '',
 
-  // where to put static assets (js/css/img/font/...)
-  assetsDir: '',
+    // whether filename will contain hash part
+    filenameHashing: true,
 
-  // whether filename will contain hash part
-  filenameHashing: true,
+    // sourceMap for production build?
+    productionSourceMap: true,
 
-  // boolean, use full build?
-  runtimeCompiler: false,
-
-  // deps to transpile
-  transpileDependencies: [
-    /* string or regex */
-  ],
-
-  // sourceMap for production build?
-  productionSourceMap: true,
-
-  // use thread-loader for babel & TS in production build
-  // enabled by default if the machine has more than 1 cores
-  parallel: hasMultipleCores(),
-
-  // <script type="module" crossorigin="use-credentials">
-  crossorigin: undefined,
-
-  // subresource integrity
-  integrity: false,
-
-  css: {
-    // extract: true,
-    // sourceMap: false,
-    // loaderOptions: {}
+    // use thread-loader for babel & TS in production build
+    // enabled by default if the machine has more than 1 cores
+    parallel: hasMultipleCores(),
+    
   }
 })
