@@ -1,7 +1,8 @@
 
 module.exports = ({ feConfig, chainWebpack } = {}) => {
+
   feConfig((feConfig) => {
-    console.log(feConfig)
+    // console.log(feConfig)
   })
 
   chainWebpack((chainWebpack) => {
@@ -9,5 +10,5 @@ module.exports = ({ feConfig, chainWebpack } = {}) => {
 }
 
 module.exports.skipPlugins = [
-  'local:fe-cli-plugin-vue3'
+  // 'local:fe-cli-plugin-test'
 ]

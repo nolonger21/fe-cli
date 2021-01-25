@@ -2,7 +2,7 @@
   "name": "@etherfe/cli-app-demo",
   "private": true,
   "version": "0.0.0",
-  "description": "",
+  "description": "fe-cli-service app-demo",
   "scripts": {
     "serve": "fe-cli-service serve",
     "build": "fe-cli-service build",

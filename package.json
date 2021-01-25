@@ -1,5 +1,5 @@
 {
-  "name": "fe-cli-monorepo",
+  "name": "fe-cli",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -8,9 +8,9 @@
   "description": "fe scaffold cli",
   "main": "index.js",
   "scripts": {
-    "serve": "yarn workspace @etherfe/cli-service-demo serve",
-    "build": "yarn workspace @etherfe/cli-service-demo build",
-    "inspect": "yarn workspace @etherfe/cli-service-demo inspect"
+    "serve": "yarn workspace @etherfe/cli-app-demo serve",
+    "build": "yarn workspace @etherfe/cli-app-demo build",
+    "inspect": "yarn workspace @etherfe/cli-app-demo inspect"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
