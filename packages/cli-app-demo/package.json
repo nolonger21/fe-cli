@@ -1,7 +1,7 @@
 {
   "name": "@etherfe/cli-app-demo",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "description": "fe-cli-service app-demo",
   "scripts": {
     "serve": "fe-cli-service serve",
@@ -14,8 +14,8 @@
     "vue-template-compiler": "^2.6.12"
   },
   "devDependencies": {
-    "@etherfe/cli-plugin-vue": "0.0.0",
-    "@etherfe/cli-service": "0.0.0"
+    "@etherfe/cli-plugin-vue": "^0.1.0-alpha.0",
+    "@etherfe/cli-service": "^0.1.0-alpha.0"
   },
   "browserslist": [
     "> 1%",

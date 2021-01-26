@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/cli-plugin-react",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,8 @@
     "@babel/preset-react": "^7.10.4"
   },
   "peerDependencies": {
-    "@etherfe/cli-service": "^0.0.0-0",
     "@etherfe/cli-babel": "^0.0.0-0",
+    "@etherfe/cli-service": "^0.0.0-0",
     "react": ">=15.0.0"
   },
   "publishConfig": {

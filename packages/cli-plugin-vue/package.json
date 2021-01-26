@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/cli-plugin-vue",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,8 +14,8 @@
     "vue-loader": "^15.9.3"
   },
   "peerDependencies": {
-    "@etherfe/cli-service": "^0.0.0-0",
     "@etherfe/cli-babel": "^0.0.0-0",
+    "@etherfe/cli-service": "^0.0.0-0",
     "vue": ">=2.2.0"
   },
   "publishConfig": {

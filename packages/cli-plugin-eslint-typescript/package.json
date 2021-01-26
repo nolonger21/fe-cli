@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/cli-plugin-eslint-typescript",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.10.4",
-    "@etherfe/cli-utils": "^0.0.0-0",
+    "@etherfe/cli-utils": "^0.1.0-alpha.0",
     "fork-ts-checker-webpack-plugin": "^5.1.0"
   },
   "peerDependencies": {
