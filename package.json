@@ -10,7 +10,8 @@
   "scripts": {
     "serve": "yarn workspace @etherfe/cli-app-demo serve",
     "build": "yarn workspace @etherfe/cli-app-demo build",
-    "inspect": "yarn workspace @etherfe/cli-app-demo inspect"
+    "inspect": "yarn workspace @etherfe/cli-app-demo inspect",
+    "version": "lerna version --conventional-commits false --no-private"
   },
   "devDependencies": {
     "@commitlint/cli": "^9.1.1",
