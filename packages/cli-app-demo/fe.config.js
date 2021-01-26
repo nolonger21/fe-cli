@@ -8,6 +8,7 @@ module.exports = ({ feConfig, chainWebpack } = {}) => {
 
   // modify plug-ins
   chainWebpack((chainWebpack) => {
+    // console.log(chainWebpack.toConfig())
   })
 
   return {

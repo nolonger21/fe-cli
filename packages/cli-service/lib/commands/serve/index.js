@@ -32,7 +32,6 @@ module.exports = (api, options, pluginConfig) => {
     const isInContainer = checkInContainer()
     const isProduction = process.env.NODE_ENV === 'production'
 
-    const url = require('url')
     const { chalk, isAbsoluteUrl } = require('@etherfe/cli-utils')
     const webpack = require('webpack')
     const WebpackDevServer = require('webpack-dev-server')
@@ -55,9 +54,7 @@ module.exports = (api, options, pluginConfig) => {
         chainWebpack
           .devtool('cheap-module-source-map')
 
-        chainWebpack
-          .plugin('hmr')
-            .use(require('webpack/lib/HotModuleReplacementPlugin'))
+        chainWebpack.stats('none') // replace webpack-dev-server 5  clientLogLevel
       }
     })
 
@@ -67,7 +64,7 @@ module.exports = (api, options, pluginConfig) => {
     validateWebpackConfig(webpackConfig, api, options)
 
     const projectDevServerOptions = webpackConfig.devServer || {}
-
+    const devServerClientOptions = projectDevServerOptions.client || {}
     const useHttps = args.https || projectDevServerOptions.https || defaults.https
     const protocol = useHttps ? 'https' : 'http'
     const host = args.host || process.env.HOST || projectDevServerOptions.host || defaults.host
@@ -89,20 +86,16 @@ module.exports = (api, options, pluginConfig) => {
     const localUrlForBrowser = publicUrl || urls.localUrlForBrowser
 
     const proxySettings = prepareProxy(projectDevServerOptions.proxy, api.resolve('public'))
-
-    if (!isProduction) {
-      const sockPath = projectDevServerOptions.sockPath || '/sockjs-node'
-      const sockjsUrl = publicUrl ? `?${publicUrl}&sockPath=${sockPath}` : (isInContainer  ? `` : `?` + url.format({ protocol, port, hostname: urls.lanUrlForConfig || 'localhost'}) + `&sockPath=${sockPath}`)
-      const devClients = [
-        require.resolve(`webpack-dev-server/client`) + sockjsUrl,
-        require.resolve(projectDevServerOptions.hotOnly ? 'webpack/hot/only-dev-server' : 'webpack/hot/dev-server')
-      ]
-      if (process.env.APPVEYOR) {
-        devClients.push(`webpack/hot/poll?500`)
-      }
-      addDevClientToEntry(webpackConfig, devClients)
+    const sockPathMap = {
+      sockjs: '/sockjs-node', // support ie 11
+      ws: '/ws'
     }
-    // console.info(webpackConfig)
+    const sockType = pluginConfig.sockType || 'sockjs'
+    const sockPath = devServerClientOptions.path || sockPathMap[sockType]
+
+    if (args.lc) {
+      console.info(webpackConfig) // latest webpack config
+    }
     const compiler = webpack(webpackConfig)
 
     compiler.hooks.failed.tap('fe-cli-service serve', msg => {
@@ -113,27 +106,36 @@ module.exports = (api, options, pluginConfig) => {
     })
 
     const server = new WebpackDevServer(compiler, Object.assign({
-      logLevel: 'silent',
-      clientLogLevel: 'silent',
+      hot: !isProduction,
+      liveReload: !isProduction,
+      compress: isProduction,
+      overlay: isProduction ? false : { warnings: false, errors: true }, // webpack-dev-server 4 bug schema field clientOverlay
+      static: {
+        directory: api.resolve('public'),
+        publicPath: outPublicPath,
+        watch: !isProduction
+      },
+      transportMode: {
+        client: sockType,
+        server: sockType
+      },
+      client: {
+        path: sockPath
+      },
       historyApiFallback: {
         disableDotRule: true,
         rewrites: genHistoryApiFallbackRewrites(outPublicPath, entryPages)
       },
-      contentBase: api.resolve('public'),
-      watchContentBase: !isProduction,
-      hot: !isProduction,
-      injectClient: false,
-      compress: isProduction,
-      publicPath: outPublicPath,
-      overlay: isProduction ? false : { warnings: false, errors: true }
+      firewall: true
     }, projectDevServerOptions, {
+      open: false,
+      port,
       https: useHttps,
       proxy: proxySettings,
-      before (app, server) {
+      onBeforeSetupMiddleware (app, server) {
         api.service.devServerConfigFns.forEach(fn => fn(app, server))
         projectDevServerOptions.before && projectDevServerOptions.before(app, server)
-      },
-      open: false
+      }
     }));
 
     return new Promise((resolve, reject) => {
@@ -221,19 +223,6 @@ module.exports = (api, options, pluginConfig) => {
   })
 }
 
-function addDevClientToEntry (config, devClient) {
-  const { entry } = config
-  if (typeof entry === 'object' && !Array.isArray(entry)) {
-    Object.keys(entry).forEach((key) => {
-      entry[key] = devClient.concat(entry[key])
-    })
-  } else if (typeof entry === 'function') {
-    config.entry = entry(devClient)
-  } else {
-    config.entry = devClient.concat(entry)
-  }
-}
-
 function genHistoryApiFallbackRewrites (baseUrl, pages = {}) {
   const path = require('path')
   const multiPageRewrites = Object
@@ -251,4 +240,8 @@ function genHistoryApiFallbackRewrites (baseUrl, pages = {}) {
 
 module.exports.defaultModes = {
   serve: 'development'
+}
+
+module.exports.defaultConfig = {
+  sockType: 'sockjs'
 }

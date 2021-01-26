@@ -118,6 +118,9 @@ module.exports = (api, options, pluginConfig) => {
     }
 
     return new Promise((resolve, reject) => {
+      if (args.lc) {
+        console.info(webpackConfig) // latest webpack config
+      }
       webpack(webpackConfig, (err, stats) => {
         stopSpinner(false)
         if (err) {

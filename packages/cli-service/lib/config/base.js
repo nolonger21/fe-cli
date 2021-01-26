@@ -16,6 +16,8 @@ module.exports = (api, options, pluginConfig) => {
       .mode('development')
       .context(api.service.context)
 
+    chainWebpack.target('web')
+
     if(entryFile) {
       chainWebpack
         .entry('app')

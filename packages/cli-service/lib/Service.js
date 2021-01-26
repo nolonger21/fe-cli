@@ -60,7 +60,8 @@ const initService = (context, args) => {
     webpackChainFns: [],
     webpackRawFns: [],
     devServerConfigFns: [],
-    runCheckFns: []
+    runCheckFns: [],
+    chainWebpackCallback: null
   }
 }
 
@@ -208,7 +209,7 @@ const resolveFeConfig = (feConfig) => {
 
 const resolveChainWebpackCallback = (chainWebpackCallback) => {
   if (typeof chainWebpackCallback === 'function') {
-    service.webpackChainFns.push(chainWebpackCallback)
+    service.chainWebpackCallback = chainWebpackCallback
   }
 }
 
@@ -244,6 +245,9 @@ const resolveChainableWebpackConfig = () =>  {
 const resolveWebpackConfig = (chainableConfig = service.resolveChainableWebpackConfig()) => {
   if (!service.inited) {
     throw new Error('Service must call init() before calling resolveWebpackConfig().')
+  }
+  if (typeof service.chainWebpackCallback === 'function') {
+    service.chainWebpackCallback(chainableConfig)
   }
   let config = chainableConfig.toConfig()
   const original = config

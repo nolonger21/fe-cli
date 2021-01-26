@@ -1,6 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
+const isProd = process.env.NODE_ENV == 'production'
+
 const findExisting = (context, files) => {
   for (const file of files) {
     if (fs.existsSync(path.join(context, file))) {
@@ -13,7 +15,6 @@ module.exports = (api, options, pluginConfig) => {
 
   api.chainWebpack(chainWebpack => {
     const getAssetPath = require('../util/getAssetPath')
-    const isProd = process.env.NODE_ENV == 'production'
 
     const {
       extract = isProd,
@@ -26,7 +27,7 @@ module.exports = (api, options, pluginConfig) => {
     const needInlineMinification = isProd && !shouldExtract
     const outputAssetName = `${pluginConfig.filenameHashing ? '.[contenthash:8]' : ''}.css`
     const filename = getAssetPath(pluginConfig.assetsDir, `css/[name]${outputAssetName}`)
-  
+
     const extractOptions = {
       filename,
       chunkFilename: filename
@@ -164,7 +165,7 @@ module.exports = (api, options, pluginConfig) => {
 
 module.exports.defaultConfig = {
   css: {
-    extract: true,
+    extract: isProd,
     sourceMap: false,
     loaderOptions: {
       css: undefined,
