@@ -1,3 +1,5 @@
+const { warn, tryRequire } = require('@etherfe/cli-utils')
+
 module.exports = (api, options, pluginConfig) => {
   api.chainWebpack((chainWebpack) => {
     
@@ -84,6 +86,24 @@ module.exports = (api, options, pluginConfig) => {
             .end()
 
   });
+
+  const triggerTip = (msgs) => warn(msgs.join(('\n')), require('./package.json').name)
+  api.addRunCheck(args => {
+    if(args['check-vue'] !== undefined) return
+    let tipMessage = ['']
+
+    if(!api.hasDepend('vue')) {
+      tipMessage.push(`The project seems to require 'vue' but it's not installed.`)
+    }
+    if(!api.hasDepend('vue-template-compiler')) {
+      tipMessage.push(`The project seems to require 'vue-template-compiler' but it's not installed.`)
+    }
+
+    if(tipMessage.length > 1) {
+      tipMessage.push(`Ignore the prompt. --no-check-vue`)
+      triggerTip(tipMessage)
+    }
+  })
 };
 
 module.exports.defaultConfig = {
