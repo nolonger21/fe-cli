@@ -1,0 +1,8 @@
+{
+  "name": "@etherfe/cli-app-example",
+  "private": true,
+  "version": "0.1.0-alpha.0",
+  "description": "fe-cli-service app-example",
+  "author": "nolonger21",
+  "license": "MIT"
+}
