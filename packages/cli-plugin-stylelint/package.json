@@ -1,0 +1,21 @@
+{
+  "name": "@etherfe/cli-plugin-stylelint",
+  "version": "0.1.0-alpha.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "@etherfe/cli-utils": "^0.1.0-alpha.0",
+    "stylelint-webpack-plugin": "^2.1.1"
+  },
+  "peerDependencies": {
+    "@etherfe/cli-service": "^0.0.0-0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nolonger21",
+  "license": "MIT"
+}
