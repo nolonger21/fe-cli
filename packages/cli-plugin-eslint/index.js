@@ -43,7 +43,8 @@ module.exports = (api, options, pluginConfig) => {
     if (!fs.existsSync(api.resolve('.eslintignore'))) {
       ignorePattern = [
         '**/*.js',
-        '!src/**/*.js'
+        '!src/**/*.js',
+        'src/assets/*.js'
       ]
     }
     chainWebpack.module
@@ -64,7 +65,8 @@ module.exports = (api, options, pluginConfig) => {
             emitWarning: true,
             emitError: true,
             eslintPath: path.dirname(eslintPath),
-            formatter: pluginConfig.formatter || 'stylish'
+            formatter: 'stylish',
+            ...pluginConfig.eslintOptions
           })
   })
 
@@ -131,5 +133,8 @@ module.exports = (api, options, pluginConfig) => {
 }
 
 module.exports.defaultConfig = {
-  formatter: 'stylish'
+  eslintOptions: {
+    formatter: 'stylish',
+    fix: false
+  }
 }

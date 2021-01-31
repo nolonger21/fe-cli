@@ -11,7 +11,7 @@ module.exports = (api, options, pluginConfig) => {
         fallback: {
           loader: require.resolve('file-loader'),
           options: {
-            name: getAssetPath(pluginConfig.assetsDir, `${dir}/[name]${outputAssetName}`),,
+            name: getAssetPath(pluginConfig.assetsDir, `${dir}/[name]${outputAssetName}`),
             esModule: false
           }
         }
