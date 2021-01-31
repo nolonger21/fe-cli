@@ -1,0 +1,2 @@
+# @etherfe/stylelint-config
+

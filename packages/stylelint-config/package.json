@@ -1,0 +1,25 @@
+{
+  "name": "@etherfe/stylelint-config",
+  "version": "0.1.0-alpha.0",
+  "description": "Standard and prettier mainstream config for stylelint",
+  "keywords": [
+    "stylelint",
+    "stylelint-config",
+    "standard and prettier"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "stylelint-config-prettier": "^8.0.2",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-prettier": "^1.1.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "nolonger21",
+  "license": "MIT"
+}
