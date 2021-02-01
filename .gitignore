@@ -6,3 +6,4 @@ yarn-error.log
 *.local
 .pnp.js
 .changelog
+fe-cli-app-example/
