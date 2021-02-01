@@ -25,5 +25,6 @@
     "strip-ansi": "^6.0.0"
   },
   "author": "nolonger21",
-  "license": "MIT"
+  "license": "MIT",
+  "gitHead": "bf2bded41ec4e79909170d8580b329023ded0ff6"
 }
