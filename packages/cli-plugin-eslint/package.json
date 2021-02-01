@@ -1,13 +1,13 @@
 {
   "name": "@etherfe/cli-plugin-eslint",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "node index.js"
   },
   "dependencies": {
-    "@etherfe/cli-utils": "^0.1.0-alpha.0",
+    "@etherfe/cli-utils": "^0.1.0-alpha.1",
     "eslint-loader": "^4.0.2"
   },
   "peerDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/stylelint-config",
-  "version": "0.1.0-alpha.0",
+  "version": "0.1.0-alpha.1",
   "description": "Standard and prettier mainstream config for stylelint",
   "keywords": [
     "stylelint",
