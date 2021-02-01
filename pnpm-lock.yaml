@@ -14,44 +14,6 @@ importers:
       lerna-changelog: ^1.0.1
   packages/cli:
     specifiers: {}
-  packages/cli-app-demo:
-    dependencies:
-      vue: 2.6.12
-      vue-template-compiler: 2.6.12
-    devDependencies:
-      '@etherfe/cli-plugin-vue': link:../cli-plugin-vue
-      '@etherfe/cli-service': link:../cli-service
-    specifiers:
-      '@etherfe/cli-plugin-vue': ^0.1.0-alpha.0
-      '@etherfe/cli-service': ^0.1.0-alpha.0
-      vue: ^2.6.12
-      vue-template-compiler: ^2.6.12
-  packages/cli-app-example/vue:
-    dependencies:
-      vue: 2.6.12
-      vue-template-compiler: 2.6.12
-    devDependencies:
-      '@etherfe/cli-plugin-eslint': link:../../cli-plugin-eslint
-      '@etherfe/cli-plugin-stylelint': link:../../cli-plugin-stylelint
-      '@etherfe/cli-plugin-vue': link:../../cli-plugin-vue
-      '@etherfe/cli-service': link:../../cli-service
-      '@etherfe/eslint-plugin': link:../../eslint-plugin
-      '@etherfe/stylelint-config': link:../../stylelint-config
-      eslint: 7.18.0
-      stylelint: 13.9.0
-      stylelint-config-standard: 20.0.0_stylelint@13.9.0
-    specifiers:
-      '@etherfe/cli-plugin-eslint': ^0.1.0-alpha.0
-      '@etherfe/cli-plugin-stylelint': ^0.1.0-alpha.0
-      '@etherfe/cli-plugin-vue': ^0.1.0-alpha.0
-      '@etherfe/cli-service': ^0.1.0-alpha.0
-      '@etherfe/eslint-plugin': ^0.1.0-alpha.0
-      '@etherfe/stylelint-config': ^0.1.0-alpha.0
-      eslint: ^7.18.0
-      stylelint: ^13.9.0
-      stylelint-config-standard: ^20.0.0
-      vue: ^2.6.12
-      vue-template-compiler: ^2.6.12
   packages/cli-plugin-babel:
     dependencies:
       '@babel/core': 7.11.5
@@ -271,6 +233,32 @@ importers:
       eslint-plugin-react-hooks: ^4.1.0
       eslint-plugin-vue: ^7.0.0-beta.3
       vue-eslint-parser: ^7.1.0
+  packages/fe-cli-app-example:
+    specifiers: {}
+  packages/fe-cli-app-example/vue:
+    dependencies:
+      vue: 2.6.12
+      vue-template-compiler: 2.6.12
+    devDependencies:
+      '@etherfe/cli-plugin-eslint': link:../../cli-plugin-eslint
+      '@etherfe/cli-plugin-stylelint': link:../../cli-plugin-stylelint
+      '@etherfe/cli-plugin-vue': link:../../cli-plugin-vue
+      '@etherfe/cli-service': link:../../cli-service
+      '@etherfe/eslint-plugin': link:../../eslint-plugin
+      '@etherfe/stylelint-config': link:../../stylelint-config
+      eslint: 7.18.0
+      stylelint: 13.9.0
+    specifiers:
+      '@etherfe/cli-plugin-eslint': ^0.1.0-alpha.0
+      '@etherfe/cli-plugin-stylelint': ^0.1.0-alpha.0
+      '@etherfe/cli-plugin-vue': ^0.1.0-alpha.0
+      '@etherfe/cli-service': ^0.1.0-alpha.0
+      '@etherfe/eslint-plugin': ^0.1.0-alpha.0
+      '@etherfe/stylelint-config': ^0.1.0-alpha.0
+      eslint: ^7.18.0
+      stylelint: ^13.9.0
+      vue: ^2.6.12
+      vue-template-compiler: ^2.6.12
   packages/stylelint-config:
     dependencies:
       stylelint-config-prettier: 8.0.2
@@ -1685,7 +1673,7 @@ packages:
       espree: 7.3.1
       globals: 12.4.0
       ignore: 4.0.6
-      import-fresh: 3.2.1
+      import-fresh: 3.3.0
       js-yaml: 3.14.0
       lodash: 4.17.20
       minimatch: 3.0.4
@@ -5565,7 +5553,7 @@ packages:
       integrity: sha512-QudtT6av5WXels9WjIM7qz1XD1cWGvX4gGXvp/zBn9nXG02D0utdU3Em2m/QjTnrsk6bBjmCygl3rmj118msQQ==
   /eslint/7.18.0:
     dependencies:
-      '@babel/code-frame': 7.10.4
+      '@babel/code-frame': 7.12.11
       '@eslint/eslintrc': 0.3.0
       ajv: 6.12.6
       chalk: 4.1.0
@@ -5584,7 +5572,7 @@ packages:
       glob-parent: 5.1.1
       globals: 12.4.0
       ignore: 4.0.6
-      import-fresh: 3.2.1
+      import-fresh: 3.3.0
       imurmurhash: 0.1.4
       is-glob: 4.0.1
       js-yaml: 3.14.0
@@ -5596,7 +5584,7 @@ packages:
       optionator: 0.9.1
       progress: 2.0.3
       regexpp: 3.1.0
-      semver: 7.3.2
+      semver: 7.3.4
       strip-ansi: 6.0.0
       strip-json-comments: 3.1.1
       table: 6.0.7
@@ -11699,27 +11687,10 @@ packages:
       stylelint: '>=10.1.0'
     resolution:
       integrity: sha512-F6yTRuc06xr1h5Qw/ykb2LuFynJ2IxkKfCMf+1xqPffkxh0S09Zc902XCffcsw/XMFq/OzQ1w54fLIDtmRNHnQ==
-  /stylelint-config-recommended/3.0.0_stylelint@13.9.0:
-    dependencies:
-      stylelint: 13.9.0
-    dev: true
-    peerDependencies:
-      stylelint: '>=10.1.0'
-    resolution:
-      integrity: sha512-F6yTRuc06xr1h5Qw/ykb2LuFynJ2IxkKfCMf+1xqPffkxh0S09Zc902XCffcsw/XMFq/OzQ1w54fLIDtmRNHnQ==
   /stylelint-config-standard/20.0.0:
     dependencies:
       stylelint-config-recommended: 3.0.0
     dev: false
-    peerDependencies:
-      stylelint: '>=10.1.0'
-    resolution:
-      integrity: sha512-IB2iFdzOTA/zS4jSVav6z+wGtin08qfj+YyExHB3LF9lnouQht//YyB0KZq9gGz5HNPkddHOzcY8HsUey6ZUlA==
-  /stylelint-config-standard/20.0.0_stylelint@13.9.0:
-    dependencies:
-      stylelint: 13.9.0
-      stylelint-config-recommended: 3.0.0_stylelint@13.9.0
-    dev: true
     peerDependencies:
       stylelint: '>=10.1.0'
     resolution:
