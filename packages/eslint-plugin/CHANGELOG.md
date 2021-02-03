@@ -8,7 +8,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Bug Fixes
 
-* add rule and note ([bf55972](https://e.coding.net/nolonger21-01/fe-cli/fe-cli/commits/bf5597232bb05fd4fc4a4d6051f8465d3cec46ca))
+* add rule and note ([bf55972](https://github.com/nolonger21/fe-cli/commits/bf5597232bb05fd4fc4a4d6051f8465d3cec46ca))
 
 
 
