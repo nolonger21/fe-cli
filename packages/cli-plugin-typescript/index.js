@@ -36,7 +36,7 @@ module.exports = (api, options, pluginConfig) => {
       const cpus = os.cpus()
       let threadOptions = {}
       if (cpus && cpus.length > 1) {
-        threadOptions({ workers: cpus.length })
+        threadOptions = { workers: cpus.length }
       }
 
       addLoader({
@@ -62,7 +62,7 @@ module.exports = (api, options, pluginConfig) => {
       name: 'ts-loader',
       loader: require.resolve('ts-loader'),
       options: {
-        transpileOnly: true,
+        transpileOnly: pluginConfig.forkTsChecker,
         appendTsSuffixTo,
         happyPackMode: useThreads,
       },
@@ -77,40 +77,46 @@ module.exports = (api, options, pluginConfig) => {
         options.appendTsxSuffixTo = ['\\.vue$']
         return options
       })
+    
+    if (pluginConfig.forkTsChecker) {
 
-    const vue = loadModule('vue', api.service.context)
-    const isVue3 = vue && semver.major(vue.version) === 3
-    if (isVue3) {
-      if(semver.major(require('fork-ts-checker-webpack-plugin/package.json').version) < 5) {
-        error( `Please upgrade 'fork-ts-checker-webpack-plugin' to version 5.x.x .`)
-        process.exit(1)
-      }
-      chainWebpack.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
-        {
-          typescript: {
-            extensions: {
-              vue: {
-                enabled: true,
-                compiler: '@vue/compiler-sfc',
+      const vue = loadModule('vue', api.service.context)
+      const isVue3 = vue && semver.major(vue.version) === 3
+      if (isVue3) {
+        if(semver.major(require('fork-ts-checker-webpack-plugin/package.json').version) < 5) {
+          error( `Please upgrade 'fork-ts-checker-webpack-plugin' to version 5.x.x .`)
+          process.exit(1)
+        }
+        chainWebpack.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
+          {
+            typescript: {
+              extensions: {
+                vue: {
+                  enabled: true,
+                  compiler: '@vue/compiler-sfc',
+                },
+              },
+              diagnosticOptions: {
+                semantic: true,
+                syntactic: useThreads,
               },
             },
-            diagnosticOptions: {
-              semantic: true,
-              syntactic: useThreads,
-            },
           },
-        },
-      ])
-    } else {
-      chainWebpack.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
-        {
-          vue: { enabled: true, compiler: 'vue-template-compiler' },
-          tslint: fs.existsSync(api.resolve('tslint.json')),
-          formatter: 'codeframe',
-          checkSyntacticErrors: useThreads,
-        },
-      ])
+        ])
+      } else {
+        chainWebpack.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
+          {
+            vue: { enabled: true, compiler: 'vue-template-compiler' },
+            tslint: fs.existsSync(api.resolve('tslint.json')),
+            formatter: 'codeframe',
+            checkSyntacticErrors: useThreads,
+          },
+        ])
+      }
+      
     }
+
+
   })
 
 
@@ -148,5 +154,6 @@ module.exports = (api, options, pluginConfig) => {
 }
 
 module.exports.defaultConfig = {
-  parallel: undefined
+  parallel: undefined,
+  forkTsChecker: true
 }
