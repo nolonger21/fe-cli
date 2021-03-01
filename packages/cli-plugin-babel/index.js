@@ -29,7 +29,7 @@ module.exports = (api, options, pluginConfig) => {
 
     const jsRule = chainWebpack.module
       .rule('js')
-        .test(/\.(m|j)?jsx?$/)
+        .test(/\.(m|c)?jsx?$/)
         .exclude
           .add(filepath => {
             if (/\.vue\.jsx?$/.test(filepath)) {
