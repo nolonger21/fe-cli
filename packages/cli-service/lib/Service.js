@@ -2,6 +2,7 @@ const { merge } = require('webpack-merge')
 const Config = require('webpack-chain')
 const PluginAPI = require('./PluginAPI')
 const defaultsDeep = require('lodash.defaultsdeep')
+const mergeDeep = require('lodash.merge')
 const {
   minimist, chalk, warn, error, resolveEnvFiles,
   loadPlugins, loadPkgPlugins, loadLocalPlugins, resolvePluginId,
@@ -9,6 +10,7 @@ const {
   checkTsProjectRun
 } = require('@etherfe/cli-utils')
 const { defaultWebpackConfig, defaultFeConfig } = require('./util/defaultConfig')
+const { deepCompareDifference } = require('./util/common')
 
 let service = null;
 
@@ -118,8 +120,13 @@ const initPlugins = () => {
   service.inited = true
   service.webpackConfig = resolveProjectWebpackConfig(service.webpackConfig, service.context)
   service.plugins.forEach(({ id, apply }) => {
-    const pluginConfig = Object.prototype.toString.call(service.feConfig) === '[object Object]' ? service.feConfig[id] || {} : {}
-    const pluginConfigMerge = defaultsDeep(pluginConfig, service.feConfig['global'])
+    let pluginConfigMerge = {}
+    const { defaultConfig } = apply || {};
+    if (Object.prototype.toString.call(defaultConfig) === '[object Object]') {
+      const pluginConfig = Object.prototype.toString.call(service.feConfig) === '[object Object]' ? service.feConfig[id] || {} : {}
+      const diffData = deepCompareDifference(defaultConfig, pluginConfig)
+      pluginConfigMerge = mergeDeep(pluginConfig, service.feConfig['global'], diffData)
+    }
     apply(new PluginAPI(id, service), service.webpackConfig, pluginConfigMerge)
   })
   service.webpackRawFns.push(service.webpackConfig)
