@@ -21,7 +21,7 @@ importers:
       '@babel/plugin-proposal-decorators': 7.10.5_@babel+core@7.11.5
       '@babel/plugin-proposal-object-rest-spread': 7.11.0_@babel+core@7.11.5
       '@babel/preset-env': 7.11.5_@babel+core@7.11.5
-      '@etherfe/cli-utils': 'link:../cli-utils'
+      '@etherfe/cli-utils': link:../cli-utils
       babel-loader: 8.1.0_@babel+core@7.11.5
       babel-plugin-component: 1.1.1
       thread-loader: 2.1.3
@@ -37,7 +37,7 @@ importers:
       thread-loader: ^2.1.3
   packages/cli-plugin-eslint:
     dependencies:
-      '@etherfe/cli-utils': 'link:../cli-utils'
+      '@etherfe/cli-utils': link:../cli-utils
       eslint-loader: 4.0.2
     specifiers:
       '@etherfe/cli-utils': ^0.1.0-alpha.1
@@ -45,7 +45,7 @@ importers:
   packages/cli-plugin-eslint-typescript:
     dependencies:
       '@babel/preset-typescript': 7.10.4
-      '@etherfe/cli-utils': 'link:../cli-utils'
+      '@etherfe/cli-utils': link:../cli-utils
       fork-ts-checker-webpack-plugin: 5.1.0
     specifiers:
       '@babel/preset-typescript': ^7.10.4
@@ -58,14 +58,14 @@ importers:
       '@babel/preset-react': ^7.10.4
   packages/cli-plugin-stylelint:
     dependencies:
-      '@etherfe/cli-utils': 'link:../cli-utils'
+      '@etherfe/cli-utils': link:../cli-utils
       stylelint-webpack-plugin: 2.1.1
     specifiers:
       '@etherfe/cli-utils': ^0.1.0-alpha.1
       stylelint-webpack-plugin: ^2.1.1
   packages/cli-plugin-typescript:
     dependencies:
-      '@etherfe/cli-utils': 'link:../cli-utils'
+      '@etherfe/cli-utils': link:../cli-utils
       babel-loader: 8.1.0
       cache-loader: 4.1.0
       fork-ts-checker-webpack-plugin: 3.1.1
@@ -80,7 +80,7 @@ importers:
       tslint: ^6.1.3
   packages/cli-plugin-vue:
     dependencies:
-      '@etherfe/cli-utils': 'link:../cli-utils'
+      '@etherfe/cli-utils': link:../cli-utils
       babel-plugin-component: 1.1.1
       pug: 3.0.0
       pug-plain-loader: 1.0.0_pug@3.0.0
@@ -108,7 +108,7 @@ importers:
       vue-loader: ^16.0.0-beta.5
   packages/cli-service:
     dependencies:
-      '@etherfe/cli-utils': 'link:../cli-utils'
+      '@etherfe/cli-utils': link:../cli-utils
       '@intervolga/optimize-cssnano-plugin': 1.0.6_webpack@5.17.0
       '@soda/friendly-errors-webpack-plugin': 1.7.1_webpack@5.17.0
       address: 1.1.2
@@ -129,6 +129,7 @@ importers:
       less: 3.12.2
       less-loader: 6.2.0_webpack@5.17.0
       lodash.defaultsdeep: 4.6.1
+      lodash.merge: 4.6.2
       mini-css-extract-plugin: 0.10.1_webpack@5.17.0
       portfinder: 1.0.28
       postcss-loader: 3.0.0
@@ -141,7 +142,7 @@ importers:
       stylus-loader: 3.0.2_stylus@0.54.8
       terser-webpack-plugin: 4.1.0_webpack@5.17.0
       url-loader: 4.1.0_file-loader@6.1.0+webpack@5.17.0
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
       webpack-bundle-analyzer: 3.8.0
       webpack-chain: 6.5.1
       webpack-dev-server: 4.0.0-beta.0_webpack@5.17.0
@@ -168,6 +169,7 @@ importers:
       less: ^3.12.2
       less-loader: ^6.2.0
       lodash.defaultsdeep: ^4.6.1
+      lodash.merge: ^4.6.2
       mini-css-extract-plugin: ^0.10.0
       portfinder: ^1.0.28
       postcss-loader: ^3.0.0
@@ -243,13 +245,13 @@ importers:
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
     devDependencies:
-      '@etherfe/cli-plugin-babel': 'link:../../cli-plugin-babel'
-      '@etherfe/cli-plugin-eslint': 'link:../../cli-plugin-eslint'
-      '@etherfe/cli-plugin-react': 'link:../../cli-plugin-react'
-      '@etherfe/cli-plugin-stylelint': 'link:../../cli-plugin-stylelint'
-      '@etherfe/cli-service': 'link:../../cli-service'
-      '@etherfe/eslint-plugin': 'link:../../eslint-plugin'
-      '@etherfe/stylelint-config': 'link:../../stylelint-config'
+      '@etherfe/cli-plugin-babel': link:../../cli-plugin-babel
+      '@etherfe/cli-plugin-eslint': link:../../cli-plugin-eslint
+      '@etherfe/cli-plugin-react': link:../../cli-plugin-react
+      '@etherfe/cli-plugin-stylelint': link:../../cli-plugin-stylelint
+      '@etherfe/cli-service': link:../../cli-service
+      '@etherfe/eslint-plugin': link:../../eslint-plugin
+      '@etherfe/stylelint-config': link:../../stylelint-config
       eslint: 7.18.0
       prettier: 2.2.1
       regenerator-runtime: 0.13.7
@@ -269,61 +271,19 @@ importers:
       react-dom: ^16.13.1
       regenerator-runtime: ^0.13.7
       stylelint: ^13.9.0
-  packages/fe-cli-app-example/react-eslint-typescript:
-    dependencies:
-      core-js: 3.6.5
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-    devDependencies:
-      '@etherfe/cli-plugin-babel': 'link:../../cli-plugin-babel'
-      '@etherfe/cli-plugin-eslint': 'link:../../cli-plugin-eslint'
-      '@etherfe/cli-plugin-eslint-typescript': 'link:../../cli-plugin-eslint-typescript'
-      '@etherfe/cli-plugin-react': 'link:../../cli-plugin-react'
-      '@etherfe/cli-plugin-stylelint': 'link:../../cli-plugin-stylelint'
-      '@etherfe/cli-service': 'link:../../cli-service'
-      '@etherfe/eslint-plugin': 'link:../../eslint-plugin'
-      '@etherfe/stylelint-config': 'link:../../stylelint-config'
-      '@types/node': 14.14.31
-      '@types/react': 17.0.2
-      '@types/react-dom': 17.0.1
-      eslint: 7.18.0
-      prettier: 2.2.1
-      regenerator-runtime: 0.13.7
-      stylelint: 13.9.0
-      typescript: 4.2.2
-    specifiers:
-      '@etherfe/cli-plugin-babel': ^0.1.0-alpha.1
-      '@etherfe/cli-plugin-eslint': ^0.1.0-alpha.1
-      '@etherfe/cli-plugin-eslint-typescript': ^0.1.0-alpha.1
-      '@etherfe/cli-plugin-react': ^0.1.0-alpha.1
-      '@etherfe/cli-plugin-stylelint': ^0.1.0-alpha.1
-      '@etherfe/cli-service': ^0.1.0-alpha.1
-      '@etherfe/eslint-plugin': ^0.1.0-alpha.1
-      '@etherfe/stylelint-config': ^0.1.0-alpha.1
-      '@types/node': ^14.14.31
-      '@types/react': ^17.0.2
-      '@types/react-dom': ^17.0.1
-      core-js: ^3.6.5
-      eslint: ^7.18.0
-      prettier: ^2.2.1
-      react: ^16.13.1
-      react-dom: ^16.13.1
-      regenerator-runtime: ^0.13.7
-      stylelint: ^13.9.0
-      typescript: ^4.0.7
   packages/fe-cli-app-example/vue:
     dependencies:
       core-js: 3.6.5
       vue: 2.6.12
       vue-template-compiler: 2.6.12
     devDependencies:
-      '@etherfe/cli-plugin-babel': 'link:../../cli-plugin-babel'
-      '@etherfe/cli-plugin-eslint': 'link:../../cli-plugin-eslint'
-      '@etherfe/cli-plugin-stylelint': 'link:../../cli-plugin-stylelint'
-      '@etherfe/cli-plugin-vue': 'link:../../cli-plugin-vue'
-      '@etherfe/cli-service': 'link:../../cli-service'
-      '@etherfe/eslint-plugin': 'link:../../eslint-plugin'
-      '@etherfe/stylelint-config': 'link:../../stylelint-config'
+      '@etherfe/cli-plugin-babel': link:../../cli-plugin-babel
+      '@etherfe/cli-plugin-eslint': link:../../cli-plugin-eslint
+      '@etherfe/cli-plugin-stylelint': link:../../cli-plugin-stylelint
+      '@etherfe/cli-plugin-vue': link:../../cli-plugin-vue
+      '@etherfe/cli-service': link:../../cli-service
+      '@etherfe/eslint-plugin': link:../../eslint-plugin
+      '@etherfe/stylelint-config': link:../../stylelint-config
       eslint: 7.18.0
       regenerator-runtime: 0.13.7
       stylelint: 13.9.0
@@ -352,7 +312,7 @@ importers:
       stylelint-config-standard: ^20.0.0
       stylelint-order: ^4.1.0
       stylelint-prettier: ^1.1.2
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.10.4:
     dependencies:
@@ -1860,7 +1820,7 @@ packages:
       cssnano: 4.1.10
       cssnano-preset-default: 4.0.7
       postcss: 7.0.32
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     peerDependencies:
       webpack: ^4.0.0
@@ -2779,7 +2739,7 @@ packages:
       chalk: 1.1.3
       error-stack-parser: 2.0.6
       string-width: 2.1.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     peerDependencies:
       webpack: ^2.0.0 || ^3.0.0 || ^4.0.0
@@ -2895,11 +2855,6 @@ packages:
   /@types/node/14.14.22:
     resolution:
       integrity: sha512-g+f/qj/cNcqKkc3tFqlXOYjrmZA+jNBiDzbP3kH+B+otKFqAdPgVTGP1IeKRdMml/aE69as5S4FqtxAbl+LaMw==
-  /@types/node/14.14.31:
-    dev: true
-    resolution:
-      integrity: sha1-cihr0z0TeqDRUtR+x8F2JWPTQFU=
-      tarball: '@types/node/download/@types/node-14.14.31.tgz?cache=0&sync_timestamp=1613796101060&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.14.31.tgz'
   /@types/node/14.6.2:
     resolution:
       integrity: sha512-onlIwbaeqvZyniGPfdw/TEhKIh79pz66L1q06WUQqJLnAb6wbjvOtepLYTGHTqzdXgBYIE3ZdmqHDGsRsbBz7A==
@@ -2910,30 +2865,10 @@ packages:
     resolution:
       integrity: sha1-L4u0QUNNFjs1+4/9zNcTiSf/uMA=
       tarball: '@types/parse-json/download/@types/parse-json-4.0.0.tgz'
-  /@types/prop-types/15.7.3:
-    dev: true
-    resolution:
-      integrity: sha1-KrDV2i5YFflLC51LldHl8kOrLKc=
-      tarball: '@types/prop-types/download/@types/prop-types-15.7.3.tgz'
   /@types/q/1.5.4:
     dev: false
     resolution:
       integrity: sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
-  /@types/react-dom/17.0.1:
-    dependencies:
-      '@types/react': 17.0.2
-    dev: true
-    resolution:
-      integrity: sha1-2S130CC/sIPgfMjgrJ+TNZmk1Wo=
-      tarball: '@types/react-dom/download/@types/react-dom-17.0.1.tgz'
-  /@types/react/17.0.2:
-    dependencies:
-      '@types/prop-types': 15.7.3
-      csstype: 3.0.7
-    dev: true
-    resolution:
-      integrity: sha1-PeJMTv75At2XlaScdfdgy+T3pag=
-      tarball: '@types/react/download/@types/react-17.0.2.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Freact%2Fdownload%2F%40types%2Freact-17.0.2.tgz'
   /@types/retry/0.12.0:
     dev: false
     resolution:
@@ -4118,7 +4053,7 @@ packages:
       mkdirp: 0.5.5
       neo-async: 2.6.2
       schema-utils: 2.7.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 8.9.0'
@@ -4858,7 +4793,7 @@ packages:
       p-limit: 3.0.2
       schema-utils: 2.7.1
       serialize-javascript: 4.0.0
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
       webpack-sources: 1.4.3
     dev: false
     engines:
@@ -4964,7 +4899,7 @@ packages:
       postcss-value-parser: 4.1.0
       schema-utils: 2.7.1
       semver: 7.3.2
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 10.13.0'
@@ -5113,11 +5048,6 @@ packages:
       node: '>=8.0.0'
     resolution:
       integrity: sha512-NL3spysxUkcrOgnpsT4Xdl2aiEiBG6bXswAABQVHcMrfjjBisFOKwLDOmf4wf32aPdcJws1zds2B0Rg+jqMyHQ==
-  /csstype/3.0.7:
-    dev: true
-    resolution:
-      integrity: sha1-Kl+3XhAV6E3RVpL3HomhRQKQlQs=
-      tarball: csstype/download/csstype-3.0.7.tgz?cache=0&sync_timestamp=1614165437658&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcsstype%2Fdownload%2Fcsstype-3.0.7.tgz
   /currently-unhandled/0.4.1:
     dependencies:
       array-find-index: 1.0.2
@@ -5173,7 +5103,7 @@ packages:
   /debug/3.2.6:
     dependencies:
       ms: 2.1.2
-    deprecated: 'Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)'
+    deprecated: Debug versions >=3.2.0 <3.2.7 || >=4 <4.3.1 have a low-severity ReDos regression when used in a Node.js environment. It is recommended you upgrade to 3.2.7 or 4.3.1. (https://github.com/visionmedia/debug/issues/797)
     resolution:
       integrity: sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
   /debug/3.2.7:
@@ -6264,7 +6194,7 @@ packages:
     dependencies:
       loader-utils: 2.0.0
       schema-utils: 2.7.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 10.13.0'
@@ -7100,7 +7030,7 @@ packages:
       lodash: 4.17.20
       pretty-error: 2.1.2
       tapable: 2.2.0
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>=10.13.0'
@@ -8237,7 +8167,7 @@ packages:
       less: 3.12.2
       loader-utils: 2.0.0
       schema-utils: 2.7.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 10.13.0'
@@ -8413,6 +8343,11 @@ packages:
     dev: false
     resolution:
       integrity: sha1-vMbEmkKihA7Zl/Mj6tpezRguC/4=
+  /lodash.merge/4.6.2:
+    dev: false
+    resolution:
+      integrity: sha1-VYqlO0O2YeGSWgr9+japoQhf5Xo=
+      tarball: lodash.merge/download/lodash.merge-4.6.2.tgz
   /lodash.set/4.3.2:
     dev: true
     resolution:
@@ -8884,7 +8819,7 @@ packages:
       loader-utils: 1.4.0
       normalize-url: 1.9.1
       schema-utils: 1.0.0
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
       webpack-sources: 1.4.3
     dev: false
     engines:
@@ -9023,7 +8958,7 @@ packages:
   /mkdirp-promise/5.0.1:
     dependencies:
       mkdirp: 1.0.4
-    deprecated: 'This package is broken and no longer maintained. ''mkdirp'' itself supports promises now, please switch to that.'
+    deprecated: This package is broken and no longer maintained. 'mkdirp' itself supports promises now, please switch to that.
     dev: true
     engines:
       node: '>=4'
@@ -10537,7 +10472,7 @@ packages:
   /preload-webpack-plugin/3.0.0-beta.4_ce496deee9365901716e4276dd146596:
     dependencies:
       html-webpack-plugin: 5.0.0-beta.6_webpack@5.17.0
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>=8.0.0'
@@ -10888,7 +10823,6 @@ packages:
     resolution:
       integrity: sha512-baolhQBSi3iNh1cglJjA0mYzga+wePk7vdEX//1dTFd+v4TsQlQE0jitJSNF1OIP82rdYulH7otaVmdlDaJ64A==
   /react-dom/16.14.0_react@16.14.0:
-    bundledDependencies: false
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -10907,7 +10841,6 @@ packages:
       integrity: sha1-eJcppNw23imZ3BVt1sHZwYzqVqQ=
       tarball: react-is/download/react-is-16.13.1.tgz
   /react/16.14.0:
-    bundledDependencies: false
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
@@ -11240,7 +11173,7 @@ packages:
       tough-cookie: 2.5.0
       tunnel-agent: 0.6.0
       uuid: 3.4.0
-    deprecated: 'request has been deprecated, see https://github.com/request/request/issues/3142'
+    deprecated: request has been deprecated, see https://github.com/request/request/issues/3142
     dev: true
     engines:
       node: '>= 6'
@@ -11300,7 +11233,7 @@ packages:
     resolution:
       integrity: sha512-zFa12V4OLtT5XUX/Q4VLvTfBf+Ok0SPc1FNGM/z9ctUdiU618qwKpWnd0CHs3+RqROfyEg/DhuHbMWYqcgljEw==
   /resolve-url/0.2.1:
-    deprecated: 'https://github.com/lydell/resolve-url#deprecated'
+    deprecated: https://github.com/lydell/resolve-url#deprecated
     resolution:
       integrity: sha1-LGN/53yJOv0qZj/iGqkIAGjiBSo=
   /resolve/1.17.0:
@@ -11432,7 +11365,7 @@ packages:
       sass: 1.26.10
       schema-utils: 2.7.1
       semver: 7.3.2
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 10.13.0'
@@ -12186,7 +12119,7 @@ packages:
     dependencies:
       loader-utils: 2.0.0
       schema-utils: 2.7.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 8.9.0'
@@ -12490,7 +12423,7 @@ packages:
       serialize-javascript: 4.0.0
       source-map: 0.6.1
       terser: 5.2.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
       webpack-sources: 1.4.3
     dev: false
     engines:
@@ -12507,7 +12440,7 @@ packages:
       serialize-javascript: 5.0.1
       source-map: 0.6.1
       terser: 5.5.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 10.13.0'
@@ -12863,14 +12796,6 @@ packages:
     dev: true
     resolution:
       integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-  /typescript/4.2.2:
-    dev: true
-    engines:
-      node: '>=4.2.0'
-    hasBin: true
-    resolution:
-      integrity: sha1-FFDwIGGPhy2w6hcxfRbY2o3bjEw=
-      tarball: typescript/download/typescript-4.2.2.tgz?cache=0&sync_timestamp=1614411499050&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ftypescript%2Fdownload%2Ftypescript-4.2.2.tgz
   /uglify-js/3.10.3:
     dev: true
     engines:
@@ -13030,7 +12955,7 @@ packages:
       integrity: sha1-mxpSWVIlhZ5V9mnZKPiMbFfyp34=
       tarball: uri-js/download/uri-js-4.4.1.tgz
   /urix/0.1.0:
-    deprecated: 'Please see https://github.com/lydell/urix#deprecated'
+    deprecated: Please see https://github.com/lydell/urix#deprecated
     resolution:
       integrity: sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
   /url-loader/4.1.0_file-loader@6.1.0+webpack@5.17.0:
@@ -13039,7 +12964,7 @@ packages:
       loader-utils: 2.0.0
       mime-types: 2.1.27
       schema-utils: 2.7.1
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 10.13.0'
@@ -13310,7 +13235,7 @@ packages:
       mime-types: 2.1.28
       range-parser: 1.2.1
       schema-utils: 3.0.0
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
     dev: false
     engines:
       node: '>= 10.13.0'
@@ -13347,7 +13272,7 @@ packages:
       strip-ansi: 6.0.0
       url: 0.11.0
       util: 0.12.3
-      webpack: 5.17.0_webpack@5.17.0
+      webpack: 5.17.0
       webpack-dev-middleware: 4.1.0_webpack@5.17.0
       ws: 7.4.2
     dev: false
@@ -13387,7 +13312,7 @@ packages:
       node: '>=10.13.0'
     resolution:
       integrity: sha512-bQsA24JLwcnWGArOKUxYKhX3Mz/nK1Xf6hxullKERyktjNMC4x8koOeaDNTA2fEJ09BdWLbM/iTW0ithREUP0w==
-  /webpack/5.17.0_webpack@5.17.0:
+  /webpack/5.17.0:
     dependencies:
       '@types/eslint-scope': 3.7.0
       '@types/estree': 0.0.46
@@ -13418,7 +13343,6 @@ packages:
       node: '>=10.13.0'
     hasBin: true
     peerDependencies:
-      webpack: '*'
       webpack-cli: '*'
     peerDependenciesMeta:
       webpack-cli:
