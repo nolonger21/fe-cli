@@ -5,6 +5,7 @@ const { semver, loadModule, os, warn, tryRequire } = require('@etherfe/cli-utils
 
 module.exports = (api, options, pluginConfig) => {
   const useThreads = process.env.NODE_ENV === 'production' && !!pluginConfig.parallel
+  const forkTsCheckerOptions = pluginConfig.forkTsCheckerOptions || {}
 
   api.chainWebpack((chainWebpack) => {
     chainWebpack.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'))
@@ -53,6 +54,18 @@ module.exports = (api, options, pluginConfig) => {
       })
     }
 
+    if (api.hasPlugin('eslint')) {
+      const matchPatterns = (api.hasPlugin('vue') || api.hasPlugin('vue3')) ? /\.(vue|(j|t)sx?)$/ : /\.(j|t)sx?$/
+      chainWebpack.module
+        .rule('eslint')
+        .test(matchPatterns)
+        .use('eslint-loader')
+        .tap(options => {
+          options.extensions = options.extensions.concat('.ts', '.tsx')
+          return options;
+        })
+    }
+  
     const appendTsSuffixTo = []
     if (api.hasPlugin('vue') || api.hasPlugin('vue3')) {
       appendTsSuffixTo.push('\\.vue$')
@@ -62,7 +75,7 @@ module.exports = (api, options, pluginConfig) => {
       name: 'ts-loader',
       loader: require.resolve('ts-loader'),
       options: {
-        transpileOnly: pluginConfig.forkTsChecker,
+        transpileOnly: true,
         appendTsSuffixTo,
         happyPackMode: useThreads,
       },
@@ -78,8 +91,6 @@ module.exports = (api, options, pluginConfig) => {
         return options
       })
     
-    if (pluginConfig.forkTsChecker) {
-
       const vue = loadModule('vue', api.service.context)
       const isVue3 = vue && semver.major(vue.version) === 3
       if (isVue3) {
@@ -89,6 +100,7 @@ module.exports = (api, options, pluginConfig) => {
         }
         chainWebpack.plugin('fork-ts-checker').use(require('fork-ts-checker-webpack-plugin'), [
           {
+            async: forkTsCheckerOptions.async,
             typescript: {
               extensions: {
                 vue: {
@@ -101,6 +113,7 @@ module.exports = (api, options, pluginConfig) => {
                 syntactic: useThreads,
               },
             },
+            formatter: forkTsCheckerOptions.formatter || 'basic',
           },
         ])
       } else {
@@ -108,14 +121,12 @@ module.exports = (api, options, pluginConfig) => {
           {
             vue: { enabled: true, compiler: 'vue-template-compiler' },
             tslint: fs.existsSync(api.resolve('tslint.json')),
-            formatter: 'codeframe',
+            formatter: forkTsCheckerOptions.formatter || 'default',
             checkSyntacticErrors: useThreads,
+            async: forkTsCheckerOptions.async
           },
         ])
       }
-      
-    }
-
 
   })
 
@@ -155,5 +166,8 @@ module.exports = (api, options, pluginConfig) => {
 
 module.exports.defaultConfig = {
   parallel: undefined,
-  forkTsChecker: true
+  forkTsCheckerOptions: {
+    async: true,
+    formatter: 'codeframe'
+  }
 }
