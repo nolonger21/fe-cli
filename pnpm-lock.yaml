@@ -69,6 +69,7 @@ importers:
       babel-loader: 8.1.0
       cache-loader: 4.1.0
       fork-ts-checker-webpack-plugin: 3.1.1
+      thread-loader: 3.0.1
       ts-loader: 8.0.3
       tslint: 6.1.3
     specifiers:
@@ -76,6 +77,7 @@ importers:
       babel-loader: ^8.1.0
       cache-loader: ^4.1.0
       fork-ts-checker-webpack-plugin: ^3.1.1
+      thread-loader: ^3.0.1
       ts-loader: ^8.0.3
       tslint: ^6.1.3
   packages/cli-plugin-vue:
@@ -3785,7 +3787,8 @@ packages:
   /big.js/5.2.2:
     dev: false
     resolution:
-      integrity: sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
+      integrity: sha1-ZfCvOC9Xi83HQr2cKB6cstd2gyg=
+      tarball: big.js/download/big.js-5.2.2.tgz
   /binary-extensions/2.2.0:
     dev: false
     engines:
@@ -5487,7 +5490,8 @@ packages:
     engines:
       node: '>= 4'
     resolution:
-      integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
+      integrity: sha1-VXBmIEatKeLpFucariYKvf9Pang=
+      tarball: emojis-list/download/emojis-list-3.0.0.tgz
   /encodeurl/1.0.2:
     dev: false
     engines:
@@ -8033,6 +8037,16 @@ packages:
     resolution:
       integrity: sha1-ybD3+pIzv+WAf+ZvzzpWF+1ZfUM=
       tarball: json5/download/json5-2.1.3.tgz
+  /json5/2.2.0:
+    dependencies:
+      minimist: 1.2.5
+    dev: false
+    engines:
+      node: '>=6'
+    hasBin: true
+    resolution:
+      integrity: sha1-Lf7+cgxrpSXZ69kJlQ8FFTFsiaM=
+      tarball: json5/download/json5-2.2.0.tgz
   /jsonfile/4.0.0:
     optionalDependencies:
       graceful-fs: 4.2.4
@@ -8266,7 +8280,8 @@ packages:
     engines:
       node: '>=6.11.5'
     resolution:
-      integrity: sha512-92+huvxMvYlMzMt0iIOukcwYBFpkYJdpl2xsZ7LrlayO7E8SOv+JJUEK17B/dJIHAOLMfh2dZZ/Y18WgmGtYNw==
+      integrity: sha1-1wIjgNZtFMX7HUlriYZOvP1Hg4Q=
+      tarball: loader-runner/download/loader-runner-4.2.0.tgz
   /loader-utils/1.4.0:
     dependencies:
       big.js: 5.2.2
@@ -8281,12 +8296,13 @@ packages:
     dependencies:
       big.js: 5.2.2
       emojis-list: 3.0.0
-      json5: 2.1.3
+      json5: 2.2.0
     dev: false
     engines:
       node: '>=8.9.0'
     resolution:
-      integrity: sha512-rP4F0h2RaWSvPEkD7BLDFQnvSf+nK+wr3ESUjNTyAGobqrijmW92zc+SO6d4p4B1wh7+B/Jg1mkQe5NYUEHtHQ==
+      integrity: sha1-5MrOW4FtQloWa18JfhDNErNgZLA=
+      tarball: loader-utils/download/loader-utils-2.0.0.tgz
   /locate-path/2.0.0:
     dependencies:
       p-locate: 2.0.0
@@ -8860,7 +8876,8 @@ packages:
       tarball: minimist-options/download/minimist-options-4.1.0.tgz
   /minimist/1.2.5:
     resolution:
-      integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+      integrity: sha1-Z9ZgFLZqaoqqDAg8X9WN9OTpdgI=
+      tarball: minimist/download/minimist-1.2.5.tgz
   /minipass-collect/1.0.2:
     dependencies:
       minipass: 3.1.3
@@ -12516,6 +12533,19 @@ packages:
       webpack: ^2.0.0 || ^3.0.0 || ^4.0.0
     resolution:
       integrity: sha512-wNrVKH2Lcf8ZrWxDF/khdlLlsTMczdcwPA9VEK4c2exlEPynYWxi9op3nPTo5lAnDIkE0rQEB3VBP+4Zncc9Hg==
+  /thread-loader/3.0.1:
+    dependencies:
+      loader-runner: 4.2.0
+      loader-utils: 2.0.0
+      neo-async: 2.6.2
+    dev: false
+    engines:
+      node: '>= 10.13.0'
+    peerDependencies:
+      webpack: ^4.27.0 || ^5.0.0
+    resolution:
+      integrity: sha1-BZdS1cPiI+xY+tWGj+ZAXoN11IA=
+      tarball: thread-loader/download/thread-loader-3.0.1.tgz?cache=0&sync_timestamp=1608189297939&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fthread-loader%2Fdownload%2Fthread-loader-3.0.1.tgz
   /through/2.3.8:
     dev: true
     resolution:
