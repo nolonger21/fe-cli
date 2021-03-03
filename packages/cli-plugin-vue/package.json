@@ -1,13 +1,13 @@
 {
   "name": "@etherfe/cli-plugin-vue",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "node index.js"
   },
   "dependencies": {
-    "@etherfe/cli-utils": "^0.1.0-alpha.1",
+    "@etherfe/cli-utils": "^0.1.0-alpha.2",
     "babel-plugin-component": "^1.1.1",
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
