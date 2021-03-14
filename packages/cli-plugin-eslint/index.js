@@ -2,8 +2,13 @@ const path = require('path')
 const fs = require('fs')
 
 module.exports = (api, options, pluginConfig) => {
+  const forkTsCheckerOptions = pluginConfig.forkTsCheckerOptions || {}
+  const isCloseOutLog = api.hasPlugin('typescript') && forkTsCheckerOptions.eslint === true
+  if (isCloseOutLog) return
+
   const { error, info, warn, resolveModule, loadModule, tryRequire } = require('@etherfe/cli-utils')
   const cwd = api.getCwd()
+
   const eslintPkg = loadModule('eslint/package.json', cwd, true)
 
   if (!eslintPkg) {

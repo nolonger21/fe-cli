@@ -3,9 +3,9 @@ const path = require('path')
 module.exports = (api, options, pluginConfig) => {
   const { error, info, warn, resolveModule, loadModule, tryRequire } = require('@etherfe/cli-utils')
   const cwd = api.getCwd()
-  const eslintPkg = loadModule('stylelint/package.json', cwd, true)
+  const stylelintPkg = loadModule('stylelint/package.json', cwd, true)
 
-  if (!eslintPkg) {
+  if (!stylelintPkg) {
     error( `The project seems to require 'stylelint' but it's not installed.`)
     process.exit(1)
   }

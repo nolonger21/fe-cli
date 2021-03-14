@@ -8,7 +8,7 @@ module.exports = (api, options, pluginConfig) => {
         .rule('js')
         .use('babel-loader')
         .tap(options => {
-          if(api.hasPlugin('eslint-typescript')) {
+          if(api.hasPlugin('eslint-typescript') || api.hasPlugin('typescript')) {
             const eslintTsIndex = options.presets.findIndex(item => Array.isArray(item) && item[0] && item[0].includes('@babel/preset-typescript'))
             if(options.presets[eslintTsIndex] && options.presets[eslintTsIndex][1]) {
               options.presets[eslintTsIndex][1].jsxPragma = 'React'
