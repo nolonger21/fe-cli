@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.4](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-eslint@0.1.0-alpha.2...@etherfe/cli-plugin-eslint@0.1.0-alpha.4) (2021-03-14)
+
+
+### Bug Fixes
+
+* release ([e1e9d3d](https://github.com/nolonger21/fe-cli/commit/e1e9d3dad825fb9bfa26e3a2352c92e216c84dbb))
+
+
+### Features
+
+* upgrade eslint-loader to eslint-webpack-plugin ([80a00ce](https://github.com/nolonger21/fe-cli/commit/80a00cef192ef54cc3b7853c433ac2c8957dde69))
+
+
+
+
+
 # [0.1.0-alpha.3](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-eslint@0.1.0-alpha.2...@etherfe/cli-plugin-eslint@0.1.0-alpha.3) (2021-03-14)
 
 **Note:** Version bump only for package @etherfe/cli-plugin-eslint

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.3](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-eslint-typescript@0.1.0-alpha.2...@etherfe/cli-plugin-eslint-typescript@0.1.0-alpha.3) (2021-03-14)
+
+
+### Features
+
+* upgrade eslint-loader to eslint-webpack-plugin ([80a00ce](https://github.com/nolonger21/fe-cli/commit/80a00cef192ef54cc3b7853c433ac2c8957dde69))
+
+
+
+
+
 # 0.1.0-alpha.1 (2021-02-01)
 
 
