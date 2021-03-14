@@ -17,21 +17,6 @@ module.exports = (api, options, pluginConfig) => {
     chainWebpack.resolve.extensions
       .prepend('.ts').prepend('.tsx')
 
-
-    if (api.hasPlugin('eslint')) {
-      if (!forkTsCheckerOptions.eslint) {
-        const matchPatterns = hasVue ? /\.(vue|(j|t)sx?)$/ : /\.(j|t)sx?$/
-        chainWebpack.module
-          .rule('eslint')
-          .test(matchPatterns)
-          .use('eslint-loader')
-          .tap(options => {
-            options.extensions = options.extensions.concat('.ts', '.tsx')
-            return options;
-          })
-      }
-    }
-
     if (isBabelParse) {
       if (api.hasPlugin('babel')) {
         chainWebpack.module

@@ -27,21 +27,6 @@ module.exports = (api, options, pluginConfig) => {
       process.exit(1)
     }
 
-    if (api.hasPlugin('eslint')) {
-      const matchPatterns = (api.hasPlugin('vue') || api.hasPlugin('vue3')) ? /\.(vue|(j|t)sx?)$/ : /\.(j|t)sx?$/
-      chainWebpack.module
-        .rule('eslint')
-        .test(matchPatterns)
-        .use('eslint-loader')
-        .tap(options => {
-          options.extensions = options.extensions.concat('.ts', '.tsx')
-          return options;
-        })
-    } else {
-      error( `The project seems to require '@etherfe/cli-plugin-eslint' but it's not installed.`)
-      process.exit(1)
-    }
-
     const extensions = {}
     if(api.hasPlugin('vue') || api.hasPlugin('vue3')) {
       const vue = loadModule('vue', api.service.context)

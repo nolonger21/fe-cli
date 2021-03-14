@@ -5,6 +5,8 @@ module.exports = (api, options, pluginConfig) => {
   const forkTsCheckerOptions = pluginConfig.forkTsCheckerOptions || {}
   const isCloseOutLog = api.hasPlugin('typescript') && forkTsCheckerOptions.eslint === true
   if (isCloseOutLog) return
+  const useThreads = process.env.NODE_ENV === 'production' && !!pluginConfig.parallel
+
 
   const { error, info, warn, resolveModule, loadModule, tryRequire } = require('@etherfe/cli-utils')
   const cwd = api.getCwd()
@@ -15,64 +17,42 @@ module.exports = (api, options, pluginConfig) => {
     error( `The project seems to require 'eslint' but it's not installed.`)
     process.exit(1)
   }
-
-  const { cacheIdentifier } = api.genCacheConfig(
-    'eslint-loader',
-    {
-      'eslint-loader': require('eslint-loader/package.json').version,
-      eslint: eslintPkg.version
-    },
-    [
-      '.eslintrc.js',
-      '.eslintrc.yaml',
-      '.eslintrc.yml',
-      '.eslintrc.json',
-      '.eslintrc',
-      '.eslintignore',
-      'package.json'
-    ]
-  )
   
   api.chainWebpack(chainWebpack => {
-    const eslintPath = resolveModule('eslint/package.json', cwd)
-    let matchPatterns = /\.jsx?$/
-    const extensions = [ '.mjs', '.cjs', '.js', '.jsx' ]
-    let ignorePattern = []
-
+    const extensions = [ 'mjs', 'cjs', 'js', 'jsx' ]
     if (api.hasPlugin('vue') || api.hasPlugin('vue3')) {
-      matchPatterns = /\.(vue|jsx?)$/
-      extensions.push('.vue')
+      extensions.push('vue')
+    }
+    if (api.hasPlugin('typescript') || api.hasPlugin('eslint-typescript')) {
+      extensions.push('ts')
+      extensions.push('tsx')
     }
 
-
+    const overrideConfig = {}
     if (!fs.existsSync(api.resolve('.eslintignore'))) {
-      ignorePattern = [
+      overrideConfig.ignorePatterns = [
         '**/*.js',
         '!src/**/*.js',
         'src/assets/*.js'
       ]
     }
-    chainWebpack.module
-      .rule('eslint')
-        .pre()
-        .exclude
-          .add(/node_modules/)
-          .add(path.dirname(require.resolve('@etherfe/cli-service')) + '/')
-          .end()
-        .test(matchPatterns)
-        .use('eslint-loader')
-          .loader(require.resolve('eslint-loader'))
-          .options({
-            extensions,
-            ignorePattern,
-            cache: true,
-            cacheIdentifier,
-            emitWarning: true,
-            emitError: true,
-            eslintPath: path.dirname(eslintPath),
-            formatter: 'stylish',
-            ...pluginConfig.eslintOptions
-          })
+
+    chainWebpack
+      .plugin('eslint')
+        .use(require.resolve('eslint-webpack-plugin'), [{
+          context: cwd,
+          files: [`src/**/*.{${extensions.join(',')}}`],
+          cache: true,
+          cacheLocation: api.resolve('node_modules/.cache/.eslintcache/'),
+          exclude: ['node_modules'],
+          threads: useThreads,
+          eslintPath: require.resolve('eslint'),
+          formatter: 'stylish',
+          fix: false,
+          overrideConfig,
+          ...pluginConfig.eslintOptions
+        }])
+
   })
 
   const triggerTip = (msgs) => warn(msgs.join(('\n')), require('./package.json').name)
@@ -138,6 +118,7 @@ module.exports = (api, options, pluginConfig) => {
 }
 
 module.exports.defaultConfig = {
+  parallel: undefined,
   eslintOptions: {
     formatter: 'stylish',
     fix: false
