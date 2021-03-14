@@ -14,8 +14,8 @@ module.exports = (api, options, pluginConfig) => {
     chainWebpack
       .plugin('stylelint')
         .use(require.resolve('stylelint-webpack-plugin'), [{
-          context: api.resolve('src'),
-          files: ['**/*.{html,vue,css,sass,scss,less,styl}'],
+          context: cwd,
+          files: ['src/**/*.{html,vue,css,sass,scss,less,styl}'],
           cache: true,
           cacheLocation: api.resolve('node_modules/.cache/.stylelintcache/'),
           ...pluginConfig.stylelintOptions
