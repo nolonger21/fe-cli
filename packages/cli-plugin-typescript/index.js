@@ -123,15 +123,16 @@ module.exports = (api, options, pluginConfig) => {
     }
     
     let vueConfig = {}
+    let isVue3 = false
     if (hasVue) {
       const vue = loadModule('vue', api.service.context)
-      const isVue3 = vue && semver.major(vue.version) === 3
+      isVue3 = vue && semver.major(vue.version) === 3
       vueConfig = {
         enabled: true,
         compiler: isVue3 ? '@vue/compiler-sfc' : 'vue-template-compiler',
       }
     }
-    if (isEsLint) {
+    if (isEsLint || isVue3) {
       const extensions = {}
       if(hasVue) {
         Object.assign(extensions, { vue: vueConfig })
