@@ -10,8 +10,8 @@
     "babel-plugin-component": "^1.1.1",
     "pug": "^3.0.0",
     "pug-plain-loader": "^1.0.0",
-    "raw-loader": "^4.0.1",
-    "vue-loader": "^16.0.0-beta.5"
+    "raw-loader": "^4.0.2",
+    "vue-loader": "^16.1.2"
   },
   "peerDependencies": {
     "@etherfe/cli-service": "^0.0.0-0",
