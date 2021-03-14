@@ -199,7 +199,7 @@ module.exports = (api, options, pluginConfig) => {
 
     const tsconfig = tryRequire(api.resolve('tsconfig.json'))
     let hasTsConfig = tsconfig && typeof tsconfig === 'object' && !Array.isArray(tsconfig)
-    let tsJsx = hasTsConfig && tsconfig.compilerOptions ? tsconfig.compilerOptions.jsx : null
+    let tsJsx = hasTsConfig && tsconfig.compilerOptions ? tsconfig.compilerOptions.jsx : ''
 
     let tipMessage = ['']
 
