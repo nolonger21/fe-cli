@@ -38,6 +38,7 @@ module.exports = (api, options, pluginConfig) => {
         .rule('js')
         .use('babel-loader')
         .tap(options => {
+          options.plugins.push('@vue/babel-plugin-jsx')
           options.plugins.push(
             [
               require.resolve('babel-plugin-component'),

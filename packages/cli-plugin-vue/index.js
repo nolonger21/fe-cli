@@ -41,11 +41,12 @@ module.exports = (api, options, pluginConfig) => {
         .plugin('vue-loader')
         .use(require('vue-loader/lib/plugin'))
 
-    if (api.hasPlugin('babel') && api.hasDepend('element-ui')) {
+    if (api.hasPlugin('babel')) {
       chainWebpack.module
         .rule('js')
         .use('babel-loader')
         .tap(options => {
+          options.presets.push(require.resolve('@vue/babel-preset-jsx'))
           options.plugins.push(
             [
               require.resolve('babel-plugin-component'),
@@ -54,7 +55,7 @@ module.exports = (api, options, pluginConfig) => {
                 "styleLibraryName": "theme-chalk"
               }
             ]
-          );
+          )
           return options
         })
     }
