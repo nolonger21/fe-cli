@@ -73,13 +73,6 @@ module.exports = (api, options, pluginConfig) => {
           options: threadOptions,
         })
       }
-
-      if (api.hasPlugin('babel')) {
-        addLoader({
-          name: 'babel-loader',
-          loader: require.resolve('babel-loader'),
-        })
-      }
   
       const appendTsSuffixTo = []
       if (hasVue) {
@@ -105,6 +98,14 @@ module.exports = (api, options, pluginConfig) => {
           options.appendTsxSuffixTo = ['\\.vue$']
           return options
         })
+
+      if (api.hasPlugin('babel')) {
+        addLoader({
+          name: 'babel-loader',
+          loader: require.resolve('babel-loader'),
+        })
+      }
+      
     }
     
     let vueConfig = {}
