@@ -73,6 +73,24 @@ module.exports = (api, options, pluginConfig) => {
           options: threadOptions,
         })
       }
+
+      if (api.hasPlugin('babel')) {
+
+        let babelOptions
+        chainWebpack.module
+          .rule('js')
+          .use('babel-loader')
+          .tap(options => {
+            babelOptions = options
+            return options
+          })
+          
+        addLoader({
+          name: 'babel-loader',
+          loader: require.resolve('babel-loader'),
+          options: babelOptions
+        })
+      }
   
       const appendTsSuffixTo = []
       if (hasVue) {
@@ -98,13 +116,6 @@ module.exports = (api, options, pluginConfig) => {
           options.appendTsxSuffixTo = ['\\.vue$']
           return options
         })
-
-      if (api.hasPlugin('babel')) {
-        addLoader({
-          name: 'babel-loader',
-          loader: require.resolve('babel-loader'),
-        })
-      }
       
     }
     
