@@ -10,7 +10,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: typescriptOverrides.files.concat(['*.vue']),
+      files: typescriptOverrides.files,
       parser: vueConfig.parser,
       parserOptions: {
         ...typescriptOverrides.parserOptions,
