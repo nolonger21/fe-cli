@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.5](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-eslint@0.1.0-alpha.4...@etherfe/cli-plugin-eslint@0.1.0-alpha.5) (2021-03-21)
+
+**Note:** Version bump only for package @etherfe/cli-plugin-eslint
+
+
+
+
+
 # [0.1.0-alpha.4](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-eslint@0.1.0-alpha.2...@etherfe/cli-plugin-eslint@0.1.0-alpha.4) (2021-03-14)
 
 

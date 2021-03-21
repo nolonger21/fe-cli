@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.3](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-babel@0.1.0-alpha.2...@etherfe/cli-plugin-babel@0.1.0-alpha.3) (2021-03-21)
+
+
+### Bug Fixes
+
+* cli plugin babel ([1d51a2e](https://github.com/nolonger21/fe-cli/commit/1d51a2eba406c59262f0e3388b940374281aad58))
+
+
+
+
+
 # 0.1.0-alpha.1 (2021-02-01)
 
 

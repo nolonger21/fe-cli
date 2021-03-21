@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.3](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-service@0.1.0-alpha.2...@etherfe/cli-service@0.1.0-alpha.3) (2021-03-21)
+
+
+### Features
+
+* add svg mini config ([835c57e](https://github.com/nolonger21/fe-cli/commit/835c57e445b768d01607fc6fda8f87e7195de7bb))
+
+
+
+
+
 # 0.1.0-alpha.1 (2021-02-01)
 
 

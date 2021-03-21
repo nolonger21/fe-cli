@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.5](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-typescript@0.1.0-alpha.4...@etherfe/cli-plugin-typescript@0.1.0-alpha.5) (2021-03-21)
+
+
+### Bug Fixes
+
+* cli plugin babel ([1d51a2e](https://github.com/nolonger21/fe-cli/commit/1d51a2eba406c59262f0e3388b940374281aad58))
+* ts plugin ([e06e9a8](https://github.com/nolonger21/fe-cli/commit/e06e9a8744aefaf08f6178b6643b0f5cee46cf85))
+
+
+
+
+
 # [0.1.0-alpha.4](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-typescript@0.1.0-alpha.2...@etherfe/cli-plugin-typescript@0.1.0-alpha.4) (2021-03-14)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/cli-service",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "based on Vue CLI service",
   "main": "index.js",
   "scripts": {

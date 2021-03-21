@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.4](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-vue3@0.1.0-alpha.3...@etherfe/cli-plugin-vue3@0.1.0-alpha.4) (2021-03-21)
+
+
+### Bug Fixes
+
+* vue jsx babel plugin ([5c548c1](https://github.com/nolonger21/fe-cli/commit/5c548c119beb70541d5f93370e8574c0fa133fcf))
+
+
+### Features
+
+* add support jsx plugin ([5e285e3](https://github.com/nolonger21/fe-cli/commit/5e285e30e3a7829a932d87e50bbf4d533ff3bbb5))
+
+
+
+
+
 # [0.1.0-alpha.3](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-vue3@0.1.0-alpha.2...@etherfe/cli-plugin-vue3@0.1.0-alpha.3) (2021-03-14)
 
 **Note:** Version bump only for package @etherfe/cli-plugin-vue3
