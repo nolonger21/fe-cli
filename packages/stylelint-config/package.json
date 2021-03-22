@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/stylelint-config",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-alpha.3",
   "description": "Standard and prettier mainstream config for stylelint",
   "keywords": [
     "stylelint",
@@ -15,7 +15,7 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.1.0",
-    "stylelint-prettier": "^1.1.2"
+    "stylelint-prettier": "^1.2.0"
   },
   "publishConfig": {
     "access": "public"
