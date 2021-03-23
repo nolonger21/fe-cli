@@ -104,6 +104,7 @@ module.exports = (api, options, pluginConfig) => {
           transpileOnly: true,
           appendTsSuffixTo,
           happyPackMode: useThreads,
+          getCustomTransformers: typescriptOptions.getCustomTransformers
         },
       })
       // https://github.com/TypeStrong/ts-loader#appendtsxsuffixto
@@ -150,7 +151,7 @@ module.exports = (api, options, pluginConfig) => {
               extensions,
               mode: 'write-references',
               diagnosticOptions: {
-                syntactic: useThreads,
+                syntactic: true,
                 semantic: true,
                 declaration: false,
                 global: false
@@ -169,7 +170,7 @@ module.exports = (api, options, pluginConfig) => {
           vue: hasVue ? vueConfig : undefined,
           eslint: forkTsCheckerOptions.eslint,
           tslint: fs.existsSync(api.resolve('tslint.json')),
-          checkSyntacticErrors: useThreads,
+          checkSyntacticErrors: true,
           memoryLimit: forkTsCheckerOptions.memoryLimit
         },
       ])
