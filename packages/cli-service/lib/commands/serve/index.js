@@ -109,7 +109,6 @@ module.exports = (api, options, pluginConfig) => {
       hot: !isProduction,
       liveReload: !isProduction,
       compress: isProduction,
-      overlay: isProduction ? false : { warnings: false, errors: true }, // webpack-dev-server 4 bug schema field clientOverlay
       static: {
         directory: api.resolve('public'),
         publicPath: outPublicPath,
@@ -120,6 +119,7 @@ module.exports = (api, options, pluginConfig) => {
         server: sockType
       },
       client: {
+        overlay: isProduction ? false : { warnings: false, errors: true },
         path: sockPath
       },
       historyApiFallback: {
