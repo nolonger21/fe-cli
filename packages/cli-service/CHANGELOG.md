@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.5](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-service@0.1.0-alpha.4...@etherfe/cli-service@0.1.0-alpha.5) (2021-04-11)
+
+
+### Bug Fixes
+
+* fix cli service error overlay ([0d53eb4](https://github.com/nolonger21/fe-cli/commit/0d53eb49b6cbc13d0f8471ad9baa51ccac88c525))
+
+
+
+
+
 # [0.1.0-alpha.3](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-service@0.1.0-alpha.2...@etherfe/cli-service@0.1.0-alpha.3) (2021-03-21)
 
 

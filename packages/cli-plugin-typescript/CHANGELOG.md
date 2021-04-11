@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-alpha.7](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-typescript@0.1.0-alpha.6...@etherfe/cli-plugin-typescript@0.1.0-alpha.7) (2021-04-11)
+
+
+### Features
+
+* add ts loader getCustomTransformers ([7d735c0](https://github.com/nolonger21/fe-cli/commit/7d735c0f369ca49261be12c029cfa7093757cab8))
+
+
+
+
+
 # [0.1.0-alpha.5](https://github.com/nolonger21/fe-cli/compare/@etherfe/cli-plugin-typescript@0.1.0-alpha.4...@etherfe/cli-plugin-typescript@0.1.0-alpha.5) (2021-03-21)
 
 
