@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/cli-service",
-  "version": "0.1.0-alpha.5",
+  "version": "0.1.1-alpha.0",
   "description": "based on Vue CLI service",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@etherfe/cli-utils": "^0.1.0-alpha.2",
+    "@etherfe/cli-utils": "^0.1.1-alpha.0",
     "@intervolga/optimize-cssnano-plugin": "^1.0.6",
     "@soda/friendly-errors-webpack-plugin": "^1.7.1",
     "address": "^1.1.2",
