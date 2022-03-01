@@ -44,9 +44,6 @@ module.exports = (api, options, pluginConfig) => {
       .alias
         .set('@', api.resolve('src'))
 
-    chainWebpack.module
-      .noParse(/jquery|lodash/)
-
     chainWebpack.node
       .merge({
         __filename: true,
