@@ -1,13 +1,13 @@
 {
   "name": "@etherfe/cli-plugin-vue",
-  "version": "0.1.0-alpha.5",
+  "version": "0.1.1-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "node index.js"
   },
   "dependencies": {
-    "@etherfe/cli-utils": "^0.1.0-alpha.2",
+    "@etherfe/cli-utils": "^0.1.1-alpha.0",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "babel-plugin-component": "^1.1.1",

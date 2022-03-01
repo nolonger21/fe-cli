@@ -2,9 +2,12 @@
   "packages": [
     "packages/*"
   ],
-  "version": "independent",
+  "version": "0.1.1-alpha.0",
   "useWorkspaces": true,
   "npmClient": "yarn",
+  "npmClientArgs": [
+    "--ignore-engines"
+  ],
   "command": {
     "publish": {
       "ignoreChanges": ["ignored-file", "*.md"],
@@ -15,8 +18,10 @@
       "npmClientArgs": ["--no-package-lock"]
     },
     "version": {
-      "message": "chore(release): publish new version",
+      "message": "chore(release): 😊 publish %s",
       "conventionalCommits": true,
+      "forcePublish": true,
+      "exact": true,
       "allowBranch": ["master", "next"]
     }
   },
