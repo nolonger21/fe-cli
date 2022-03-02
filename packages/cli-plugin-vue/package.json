@@ -1,17 +1,17 @@
 {
   "name": "@etherfe/cli-plugin-vue",
-  "version": "0.1.1-alpha.0",
+  "version": "0.1.1-alpha.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "node index.js"
   },
   "dependencies": {
-    "@etherfe/cli-utils": "^0.1.1-alpha.0",
+    "@etherfe/cli-utils": "0.1.1-alpha.1",
     "@vue/babel-helper-vue-jsx-merge-props": "^1.2.1",
+    "@vue/babel-plugin-jsx": "^1.1.1",
     "@vue/babel-preset-jsx": "^1.2.4",
     "@vue/vue-loader-v15": "npm:vue-loader@^15.9.7",
-    "@vue/babel-plugin-jsx": "^1.1.1",
     "babel-plugin-component": "^1.1.1",
     "pug": "^3.0.2",
     "pug-plain-loader": "^1.1.0",
