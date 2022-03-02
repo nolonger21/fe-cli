@@ -102,3 +102,11 @@ function clearRequireCache (id, map = new Map()) {
     delete require.cache[id]
   }
 }
+
+exports.getPkgMajor = function(pkgName, cwd, defaultVersion) {
+  let pkg;
+  try {
+    pkg = exports.loadModule(pkgName, cwd); 
+  } catch (error) {}
+  return pkg ? semver.major(pkg.version) : defaultVersion;
+}

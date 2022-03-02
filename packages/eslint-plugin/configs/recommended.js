@@ -49,7 +49,7 @@ module.exports = {
     'prefer-promise-reject-errors': 2, // 要求使用 Error 对象作为 Promise 拒绝的原因
     'no-label-var': 2, // 不允许标签与变量同名
     'no-shadow': 2, // 禁止变量声明与外层作用域的变量同名
-    'no-use-before-define': 2, // 禁止在变量定义之前使用它们
+    'no-use-before-define': 0, // 禁止在变量定义之前使用它们 - 关闭，兼容react jsx
     'no-nested-ternary': 1, // 禁止嵌套的三元表达式
     'eqeqeq': 2 // 必须全等
   },

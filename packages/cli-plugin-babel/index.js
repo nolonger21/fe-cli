@@ -26,12 +26,21 @@ module.exports = (api, options, pluginConfig) => {
   
   api.chainWebpack(chainWebpack => {
     chainWebpack.resolveLoader.modules.prepend(path.join(__dirname, 'node_modules'))
+    
+    chainWebpack.module
+      .rule('js')
+      .resolve
+        .set('fullySpecified', false)
 
     const jsRule = chainWebpack.module
       .rule('js')
         .test(/\.(m|c)?jsx?$/)
         .exclude
           .add(filepath => {
+            if (!filepath) {
+              return true
+            }
+
             if (/\.vue\.jsx?$/.test(filepath)) {
               return false
             }
@@ -75,6 +84,7 @@ module.exports = (api, options, pluginConfig) => {
       .use('babel-loader')
         .loader(require.resolve('babel-loader'))
         .options({
+          cacheCompression: false,
           cacheDirectory: false,
           compact: false,
           extends: path.join(__dirname, './babel.config.js'),

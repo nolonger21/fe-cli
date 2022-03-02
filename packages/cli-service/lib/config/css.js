@@ -1,8 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 
-const isProd = process.env.NODE_ENV == 'production'
-
 const findExisting = (context, files) => {
   for (const file of files) {
     if (fs.existsSync(path.join(context, file))) {
@@ -15,6 +13,7 @@ module.exports = (api, options, pluginConfig) => {
 
   api.chainWebpack(chainWebpack => {
     const getAssetPath = require('../util/getAssetPath')
+    const isProd = process.env.NODE_ENV === 'production'
 
     const {
       extract = isProd,
@@ -30,7 +29,8 @@ module.exports = (api, options, pluginConfig) => {
 
     const extractOptions = {
       filename,
-      chunkFilename: filename
+      chunkFilename: filename,
+      ignoreOrder: false
     }
 
     // use relative publicPath in extracted CSS based on extract location
@@ -51,11 +51,13 @@ module.exports = (api, options, pluginConfig) => {
     
     if (!hasPostCSSConfig) {
       loaderOptions.postcss = {
-        plugins: [
-          require('autoprefixer')({
-            overrideBrowserslist: [ "> 1%", 'last 2 versions']
-          })
-        ]
+        postcssOptions: {
+          plugins: [
+            require('autoprefixer')({
+              overrideBrowserslist: [ "> 1%", 'last 2 versions']
+            })
+          ]
+        }
       }
     }
 
@@ -82,7 +84,6 @@ module.exports = (api, options, pluginConfig) => {
             .use('extract-css-loader')
             .loader(require('mini-css-extract-plugin').loader)
             .options({
-              hmr: !isProd,
               publicPath: cssPublicPath
             })
         } else {
@@ -110,7 +111,9 @@ module.exports = (api, options, pluginConfig) => {
             .loader(require.resolve('postcss-loader'))
             .options({
               sourceMap,
-              plugins: [require('cssnano')(cssnanoOptions)]
+              postcssOptions: {
+                plugins: [require('cssnano')(cssnanoOptions)]
+              }
             })
         }
 
@@ -136,14 +139,33 @@ module.exports = (api, options, pluginConfig) => {
     }
 
     createCSSRule('css', /\.css$/)
-    createCSSRule('less', /\.less$/, 'less-loader', loaderOptions.less)
-    createCSSRule('scss', /\.scss$/, 'sass-loader', Object.assign({ implementation: require('sass') },loaderOptions.scss))
+    createCSSRule('less', /\.less$/, 'less-loader', Object.assign({
+      sourceMap,
+      lessOptions: {
+        javascriptEnabled: true
+      }
+    }, loaderOptions.less))
+    createCSSRule('scss', /\.scss$/, 'sass-loader', Object.assign({
+      sourceMap,
+    },loaderOptions.scss || loaderOptions.sass))
     createCSSRule('sass', /\.sass$/, 'sass-loader', Object.assign(
-      { implementation: require('sass') },
+      {
+        sourceMap,
+      },
       loaderOptions.sass,
-      { sassOptions: Object.assign({}, loaderOptions.sass && loaderOptions.sass.sassOptions, { indentedSyntax: true })}
+      {
+        sassOptions: Object.assign(
+          {},
+          loaderOptions.sass && loaderOptions.sass.sassOptions,
+          { 
+            indentedSyntax: true
+          }
+        )
+      }
     ))
-    createCSSRule('stylus', /\.styl(us)?$/, 'stylus-loader', Object.assign({ preferPathResolver: 'webpack' }, loaderOptions.stylus))
+    createCSSRule('stylus', /\.styl(us)?$/, 'stylus-loader', Object.assign({
+      sourceMap,
+    }, loaderOptions.stylus))
     createCSSRule('postcss', /\.p(ost)?css$/)
 
     if (shouldExtract) {
@@ -165,7 +187,7 @@ module.exports = (api, options, pluginConfig) => {
 
 module.exports.defaultConfig = {
   css: {
-    extract: isProd,
+    extract: undefined,
     sourceMap: false,
     loaderOptions: {
       css: undefined,

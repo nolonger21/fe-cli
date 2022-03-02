@@ -64,7 +64,6 @@ module.exports = (api, options, pluginConfig) => {
     validateWebpackConfig(webpackConfig, api, options)
 
     const projectDevServerOptions = webpackConfig.devServer || {}
-    const devServerClientOptions = projectDevServerOptions.client || {}
     const useHttps = args.https || projectDevServerOptions.https || defaults.https
     const protocol = useHttps ? 'https' : 'http'
     const host = args.host || process.env.HOST || projectDevServerOptions.host || defaults.host
@@ -76,6 +75,7 @@ module.exports = (api, options, pluginConfig) => {
         ? rawPublicUrl
         : `${protocol}://${rawPublicUrl}`
       : null
+    const publicHost = publicUrl ? /^[a-zA-Z]+:\/\/([^/?#]+)/.exec(publicUrl)[1] : undefined
 
     const urls = prepareURLs(
       protocol,
@@ -90,8 +90,33 @@ module.exports = (api, options, pluginConfig) => {
       sockjs: '/sockjs-node', // support ie 11
       ws: '/ws'
     }
-    const sockType = pluginConfig.sockType || 'sockjs'
-    const sockPath = devServerClientOptions.path || sockPathMap[sockType]
+
+    let webSocketURL
+    if (!isProduction) {
+      if (publicHost) {
+        webSocketURL = {
+          protocol: protocol === 'https' ? 'wss' : 'ws',
+          hostname: publicHost,
+          port
+        }
+      } else if (isInContainer) {
+        webSocketURL = 'auto://0.0.0.0:0/ws'
+      } else {
+        webSocketURL = {
+          protocol: protocol === 'https' ? 'wss' : 'ws',
+          hostname: urls.lanUrlForConfig || 'localhost',
+          port
+        }
+      }
+
+      if (process.env.APPVEYOR) {
+        webpackConfig.plugins.push(
+          new webpack.EntryPlugin(__dirname, 'webpack/hot/poll?500', { name: undefined })
+        )
+      }
+    }
+
+    const sockType = pluginConfig.sockType || 'ws' // sockjs
 
     if (args.lc) {
       console.info(webpackConfig) // latest webpack config
@@ -105,38 +130,49 @@ module.exports = (api, options, pluginConfig) => {
       })
     })
 
-    const server = new WebpackDevServer(compiler, Object.assign({
+    const server = new WebpackDevServer(Object.assign({
       hot: !isProduction,
       liveReload: !isProduction,
       compress: isProduction,
-      static: {
-        directory: api.resolve('public'),
-        publicPath: outPublicPath,
-        watch: !isProduction
-      },
-      transportMode: {
-        client: sockType,
-        server: sockType
-      },
-      client: {
-        overlay: isProduction ? false : { warnings: false, errors: true },
-        path: sockPath
-      },
-      historyApiFallback: {
-        disableDotRule: true,
-        rewrites: genHistoryApiFallbackRewrites(outPublicPath, entryPages)
-      },
-      firewall: true
+      webSocketServer: sockType,
     }, projectDevServerOptions, {
-      open: false,
+      open: false, // custom open
+      host,
       port,
       https: useHttps,
       proxy: proxySettings,
-      onBeforeSetupMiddleware (app, server) {
-        api.service.devServerConfigFns.forEach(fn => fn(app, server))
-        projectDevServerOptions.before && projectDevServerOptions.before(app, server)
-      }
-    }));
+      static: {
+        directory: api.resolve('public'),
+        publicPath: outPublicPath,
+        watch: !isProduction,
+        ...projectDevServerOptions.static
+      },
+      client: {
+        webSocketURL,
+        logging: 'none',
+        overlay: isProduction ? false : { warnings: false, errors: true },
+        progress: !isProduction,
+        webSocketTransport: sockType,
+        ...projectDevServerOptions.client
+      },
+      historyApiFallback: {
+        disableDotRule: true,
+        htmlAcceptHeaders: [
+          'text/html',
+          'application/xhtml+xml'
+        ],
+        rewrites: genHistoryApiFallbackRewrites(outPublicPath, entryPages),
+        ...projectDevServerOptions.historyApiFallback
+      },
+      setupExitSignals: true,
+      setupMiddlewares (middlewares, devServer) {
+        api.service.devServerConfigFns.forEach(fn => fn(devServer.app, devServer))
+        if (projectDevServerOptions.setupMiddlewares) {
+          return projectDevServerOptions.setupMiddlewares(middlewares, devServer)
+        }
+        return middlewares
+      },
+    }), compiler);
 
     return new Promise((resolve, reject) => {
       let isFirstCompile = true
@@ -213,12 +249,8 @@ module.exports = (api, options, pluginConfig) => {
           })
         }
       })
-        
-      server.listen(port, host, err => {
-        if (err) {
-          reject(err)
-        }
-      })
+
+      server.start().catch(err => reject(err))
     })
   })
 }
@@ -243,5 +275,6 @@ module.exports.defaultModes = {
 }
 
 module.exports.defaultConfig = {
-  sockType: 'sockjs'
+  assetsDir: '',
+  sockType: 'ws'
 }

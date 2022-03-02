@@ -7,8 +7,7 @@ module.exports = (api, options, pluginConfig) => {
   if (isCloseOutLog) return
   const useThreads = process.env.NODE_ENV === 'production' && !!pluginConfig.parallel
 
-
-  const { error, info, warn, resolveModule, loadModule, tryRequire } = require('@etherfe/cli-utils')
+  const { error, warn, loadModule, tryRequire } = require('@etherfe/cli-utils')
   const cwd = api.getCwd()
 
   const eslintPkg = loadModule('eslint/package.json', cwd, true)
@@ -20,7 +19,7 @@ module.exports = (api, options, pluginConfig) => {
   
   api.chainWebpack(chainWebpack => {
     const extensions = [ 'mjs', 'cjs', 'js', 'jsx' ]
-    if (api.hasPlugin('vue') || api.hasPlugin('vue3')) {
+    if (api.hasPlugin('vue')) {
       extensions.push('vue')
     }
     if (api.hasPlugin('typescript') || api.hasPlugin('eslint-typescript')) {
@@ -86,14 +85,14 @@ module.exports = (api, options, pluginConfig) => {
           tipMessage.push(`Please use "plugin:@etherfe/{type}" extend config to .eslintrc.js {extends} field.`)
         }
         if(!api.hasPlugin('eslint-typescript') && !api.hasPlugin('typescript')) {
-          if(!api.hasPlugin('vue') && !api.hasPlugin('vue3') && !api.hasPlugin('react')) {
+          if(!api.hasPlugin('vue') && !api.hasPlugin('react')) {
             if(!eslintExtends || !hasExtends(['plugin:@etherfe/recommended'], eslintExtends) ) {
               tipMessage.push('Example: extends: ["plugin:@etherfe/recommended"]')
               tipMessage.push('Open prettier config example: extends: ["plugin:@etherfe/recommended", "plugin:@etherfe/prettier"]')
               tipMessage.push(`Recommended project use .prettierrc.js config file.`)
             }
           }
-          if(api.hasPlugin('vue') || api.hasPlugin('vue3')) {
+          if(api.hasPlugin('vue')) {
             if(!eslintExtends || !hasExtends(['plugin:@etherfe/vue'], eslintExtends) ) {
               tipMessage.push('Example: extends: ["plugin:@etherfe/vue"]')
               tipMessage.push('Open prettier config example: extends: ["plugin:@etherfe/vue", "plugin:@etherfe/prettier-vue"]')

@@ -19,7 +19,7 @@ module.exports = pluginConfig => ({
       toplevel: false,
       typeofs: false,
 
-      // a few flags with noticable gains/speed ratio
+      // a few flags with noticeable gains/speed ratio
       // numbers based on out of the box vendor bundle
       booleans: true, // 0.7kb
       if_return: true, // 0.4kb
@@ -35,8 +35,6 @@ module.exports = pluginConfig => ({
       safari10: true
     }
   },
-  sourceMap: pluginConfig.productionSourceMap,
-  cache: true,
   parallel: !!pluginConfig.parallel,
   extractComments: false
 })

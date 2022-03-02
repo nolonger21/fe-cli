@@ -5,7 +5,8 @@ let config = {
       {
         "modules": false,
         "useBuiltIns": "usage",
-        "corejs": 3
+        "corejs": 3,
+        "loose": false
       }
     ],
   ],
@@ -20,7 +21,7 @@ let config = {
     [
       "@babel/plugin-proposal-class-properties",
       {
-        "loose": true
+        "loose": false
       }
     ]
   ],

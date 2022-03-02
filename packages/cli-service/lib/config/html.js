@@ -81,7 +81,7 @@ module.exports = (api, options, pluginConfig) => {
 
     // resolve HTML file(s)
     const HTMLPlugin = require('html-webpack-plugin')
-    const PreloadPlugin = require('preload-webpack-plugin')
+    const PreloadPlugin = require('@vue/preload-webpack-plugin')
     const isMultiPage = Object.keys(options.entry).length > 1
     const multiPageConfig = isMultiPage ? options.entry : null
     const htmlPath = api.resolve('public/index.html')

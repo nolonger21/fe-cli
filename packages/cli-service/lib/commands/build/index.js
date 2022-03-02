@@ -105,7 +105,7 @@ module.exports = (api, options, pluginConfig) => {
       const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
       webpackConfig.plugins.push(new BundleAnalyzerPlugin({
         logLevel: 'warn',
-        openAnalyzer: false,
+        openAnalyzer: true,
         analyzerMode: args.report ? 'static' : 'disabled',
         reportFilename: `report.html`,
         statsFilename: `report.json`,

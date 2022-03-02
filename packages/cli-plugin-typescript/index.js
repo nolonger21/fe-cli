@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 
-const { semver, loadModule, os, warn, error, tryRequire } = require('@etherfe/cli-utils')
+const { semver, loadModule, os, warn, error, tryRequire, getPkgMajor } = require('@etherfe/cli-utils')
 
 module.exports = (api, options, pluginConfig) => {
   const useThreads = process.env.NODE_ENV === 'production' && !!pluginConfig.parallel
@@ -9,7 +9,9 @@ module.exports = (api, options, pluginConfig) => {
   const typescriptOptions = pluginConfig.typescriptOptions || {}
   const isEsLint = typescriptOptions.linter === 'eslint'
   const isBabelParse = typescriptOptions.parser === 'babel'
-  const hasVue = api.hasPlugin('vue') || api.hasPlugin('vue3')
+  const hasVue = api.hasPlugin('vue')
+  const cwd = api.getCwd()
+  const vueMajor = getPkgMajor('vue', cwd, 2)
 
   api.chainWebpack((chainWebpack) => {
     chainWebpack.resolveLoader.modules
@@ -121,16 +123,13 @@ module.exports = (api, options, pluginConfig) => {
     }
     
     let vueConfig = {}
-    let isVue3 = false
     if (hasVue) {
-      const vue = loadModule('vue', api.service.context)
-      isVue3 = vue && semver.major(vue.version) === 3
       vueConfig = {
         enabled: true,
-        compiler: isVue3 ? '@vue/compiler-sfc' : 'vue-template-compiler',
+        compiler: vueMajor === 3 ? '@vue/compiler-sfc' : 'vue-template-compiler',
       }
     }
-    if (isEsLint || isVue3) {
+    if (isEsLint || vueMajor === 3) {
       const extensions = {}
       if(hasVue) {
         Object.assign(extensions, { vue: vueConfig })
@@ -203,7 +202,7 @@ module.exports = (api, options, pluginConfig) => {
     let tipMessage = ['']
 
     if(isEsLint && isBabelParse) {
-      if(!api.hasPlugin('vue') && !api.hasPlugin('vue3') && !api.hasPlugin('react') && !tsJsx.includes('react')) {
+      if(!api.hasPlugin('vue') && !api.hasPlugin('react') && !tsJsx.includes('react')) {
         if(!eslintExtends || !hasExtends(['plugin:@etherfe/typescript'],eslintExtends) ) {
           tipMessage.push('Example: extends: ["plugin:@etherfe/typescript"]')
           tipMessage.push('Open prettier config example: extends: ["plugin:@etherfe/typescript", "plugin:@etherfe/prettier-typescript"]')
@@ -212,17 +211,10 @@ module.exports = (api, options, pluginConfig) => {
       }
 
       if(api.hasPlugin('vue')) {
-        if(!eslintExtends || !hasExtends(['plugin:@etherfe/vue-typescript'],eslintExtends) ) {
-          tipMessage.push('Example: extends: ["plugin:@etherfe/vue-typescript"]')
-          tipMessage.push('Open prettier config example: extends: ["plugin:@etherfe/vue-typescript", "plugin:@etherfe/prettier-vue", "plugin:@etherfe/prettier-typescript"]')
-          tipMessage.push(`Recommended project use .prettierrc.js config file.`)
-        }
-      }
-
-      if(api.hasPlugin('vue3')) {
-        if(!eslintExtends || !hasExtends(['plugin:@etherfe/vue3-typescript'],eslintExtends) ) {
-          tipMessage.push('Example: extends: ["plugin:@etherfe/vue3-typescript"]')
-          tipMessage.push('Open prettier config example: extends: ["plugin:@etherfe/vue3-typescript", "plugin:@etherfe/prettier-vue", "plugin:@etherfe/prettier-typescript"]')
+        const appendText = vueMajor === 3 ? '3' : ''
+        if(!eslintExtends || !hasExtends([`plugin:@etherfe/vue${appendText}-typescript`],eslintExtends) ) {
+          tipMessage.push(`Example: extends: ["plugin:@etherfe/vue${appendText}-typescript"]`)
+          tipMessage.push(`Open prettier config example: extends: ["plugin:@etherfe/vue${appendText}-typescript", "plugin:@etherfe/prettier-vue", "plugin:@etherfe/prettier-typescript"]`)
           tipMessage.push(`Recommended project use .prettierrc.js config file.`)
         }
       }

@@ -1,53 +1,62 @@
 module.exports = (api, options, pluginConfig) => {
+  const getAssetPath = require('../util/getAssetPath')
+  const inlineLimit = pluginConfig.inlineLimit || 8 * 1024
+  const outputAssetName = `${pluginConfig.filenameHashing ? '.[hash:8]' : ''}.[ext]`
+
+  const genAssetSubPath = dir => {
+    return getAssetPath(pluginConfig.assetsDir, `${dir}/[name]${outputAssetName}`)
+  }
 
   api.chainWebpack(chainWebpack => {
-    const getAssetPath = require('../util/getAssetPath')
-    const inlineLimit = pluginConfig.inlineLimit || 4096
-    const outputAssetName = `${pluginConfig.filenameHashing ? '.[hash:8]' : ''}.[ext]`
 
-    const genUrlLoaderOptions = dir => {
-      const urlLoaderOptions = {
-        limit: inlineLimit,
-        fallback: {
-          loader: require.resolve('file-loader'),
-          options: {
-            name: getAssetPath(pluginConfig.assetsDir, `${dir}/[name]${outputAssetName}`),
-            esModule: false
-          },
-        }
-      }
-      if (pluginConfig.miniSvg) {
-        const svgToMiniDataURI = require('mini-svg-data-uri')
-        urlLoaderOptions.generator =  (content) => svgToMiniDataURI(content.toString())
-      }
-      return urlLoaderOptions
-    }
+    chainWebpack.module
+      .rule('svg')
+        .test(/\.(svg)(\?.*)?$/)
+        .set('type', 'asset')
+        .set('generator', {
+          filename: genAssetSubPath('img'),
+          dataUrl: pluginConfig.miniSvg ? content => {
+            if (typeof content !== 'string') {
+              content = content.toString();
+            }
+            const svgToMiniDataURI = require('mini-svg-data-uri')
+            return svgToMiniDataURI(content);
+          } : undefined
+        })
+        .set('parser', {
+          dataUrlCondition: {
+            maxSize: inlineLimit
+          }
+        })
 
     chainWebpack.module
       .rule('images')
-        .test(/\.(png|jpe?g|gif|svg|webp)(\?.*)?$/)
-        .use('url-loader')
-          .loader(require.resolve('url-loader'))
-          .options(genUrlLoaderOptions('img'))
+        .test(/\.(png|jpe?g|gif|webp|avif)(\?.*)?$/)
+        .set('type', 'asset')
+        .set('generator', {
+          filename: genAssetSubPath('img')
+        })
 
     chainWebpack.module
       .rule('media')
         .test(/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/)
-        .use('url-loader')
-          .loader(require.resolve('url-loader'))
-          .options(genUrlLoaderOptions('media'))
+        .set('type', 'asset')
+        .set('generator', {
+          filename: genAssetSubPath('media')
+        })
 
     chainWebpack.module
       .rule('fonts')
         .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/i)
-        .use('url-loader')
-          .loader(require.resolve('url-loader'))
-          .options(genUrlLoaderOptions('fonts'))
+        .set('type', 'asset')
+        .set('generator', {
+          filename: genAssetSubPath('fonts')
+        })
   })
 
 }
 
 module.exports.defaultConfig = {
-  inlineLimit: 4096,
-  miniSvg: false
+  inlineLimit: 4 * 1024,
+  miniSvg: true
 }

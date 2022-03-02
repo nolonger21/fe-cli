@@ -1,1 +1,0 @@
-# @etherfe/cli-plugin-eslint-typescript
