@@ -89,9 +89,11 @@ module.exports = (api, options, pluginConfig) => {
     const publicCopyIgnore = ['.DS_Store']
 
     if (!multiPageConfig) {
-      // default, single page setup.
-      htmlOptions.template = fs.existsSync(htmlPath) ? htmlPath : defaultHtmlPath
-      publicCopyIgnore.push(path.relative(api.resolve('public'), api.resolve(htmlOptions.template)))
+      const hasPublicHtml = fs.existsSync(htmlPath)
+      htmlOptions.template = hasPublicHtml ? htmlPath : defaultHtmlPath
+      if (hasPublicHtml) {
+        publicCopyIgnore.push(htmlPath)
+      }
 
       chainWebpack
         .plugin('html')
