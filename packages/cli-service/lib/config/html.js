@@ -61,7 +61,8 @@ module.exports = (api, options, pluginConfig) => {
           }
         },
         resolveClientEnv(/^APP_/, {
-            BASE_URL: publicPath
+            BASE_URL: publicPath,
+            package: api.service.pkg
           }, true /* raw */)
         )
       }
