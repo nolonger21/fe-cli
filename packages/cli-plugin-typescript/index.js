@@ -248,8 +248,8 @@ module.exports = (api, options, pluginConfig) => {
 module.exports.defaultConfig = {
   parallel: undefined,
   typescriptOptions: {
-    linter: 'tslint',
-    parser: 'ts'
+    linter: 'eslint',
+    parser: 'babel'
   },
   forkTsCheckerOptions: {
     async: true,
