@@ -24,7 +24,7 @@
     },
     "version": {
       "message": "chore(release): 😊 publish %s",
-      "conventionalCommits": true,
+      "conventionalCommits": false,
       "forcePublish": true,
       "exact": true
     }
