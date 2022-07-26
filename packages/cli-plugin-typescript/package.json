@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/cli-plugin-typescript",
-  "version": "0.1.1-alpha.2",
+  "version": "0.1.2-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@babel/preset-typescript": "^7.16.7",
-    "@etherfe/cli-utils": "0.1.1-alpha.2",
+    "@etherfe/cli-utils": "0.1.2-alpha.0",
     "babel-loader": "^8.2.3",
     "cache-loader": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^6.2.6",

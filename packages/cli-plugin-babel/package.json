@@ -1,6 +1,6 @@
 {
   "name": "@etherfe/cli-plugin-babel",
-  "version": "0.1.1-alpha.2",
+  "version": "0.1.2-alpha.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "@babel/plugin-proposal-decorators": "^7.17.2",
     "@babel/plugin-proposal-object-rest-spread": "^7.17.3",
     "@babel/preset-env": "^7.16.11",
-    "@etherfe/cli-utils": "0.1.1-alpha.2",
+    "@etherfe/cli-utils": "0.1.2-alpha.0",
     "babel-loader": "^8.2.3",
     "babel-plugin-component": "^1.1.1",
     "thread-loader": "^3.0.4"
