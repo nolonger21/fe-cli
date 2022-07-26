@@ -149,15 +149,18 @@ module.exports = (api, options, pluginConfig) => {
         chainWebpack.entry(name).merge(entries.map(e => api.resolve(e)))
 
         // resolve page index template
-        const hasDedicatedTemplate = fs.existsSync(api.resolve(template))
+        const targetHtmlPath = api.resolve(template);
+        const hasDedicatedTemplate = fs.existsSync(targetHtmlPath)
         const templatePath = hasDedicatedTemplate
-          ? template
+          ? targetHtmlPath
           : fs.existsSync(htmlPath)
             ? htmlPath
             : defaultHtmlPath
 
-        publicCopyIgnore.push(path.relative(api.resolve('public'), api.resolve(templatePath)))
-
+        if (hasDedicatedTemplate) {
+          publicCopyIgnore.push(targetHtmlPath)
+        }
+        
         // inject html plugin for the page
         const pageHtmlOptions = Object.assign(
           {},
