@@ -26,11 +26,7 @@
       "message": "chore(release): 😊 publish %s",
       "conventionalCommits": true,
       "forcePublish": true,
-      "exact": true,
-      "allowBranch": [
-        "master",
-        "next"
-      ]
+      "exact": true
     }
   },
   "changelog": {
