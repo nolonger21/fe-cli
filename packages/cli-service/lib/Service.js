@@ -121,12 +121,10 @@ const initPlugins = () => {
   service.webpackConfig = resolveProjectWebpackConfig(service.webpackConfig, service.context)
   service.plugins.forEach(({ id, apply }) => {
     let pluginConfigMerge = {}
-    const { defaultConfig } = apply || {};
-    if (Object.prototype.toString.call(defaultConfig) === '[object Object]') {
-      const pluginConfig = Object.prototype.toString.call(service.feConfig) === '[object Object]' ? service.feConfig[id] || {} : {}
-      const diffData = deepCompareDifference(defaultConfig, pluginConfig)
-      pluginConfigMerge = mergeDeep(pluginConfig, service.feConfig['global'], diffData)
-    }
+    const { defaultConfig = {} } = apply || {};
+    const pluginConfig = Object.prototype.toString.call(service.feConfig) === '[object Object]' ? service.feConfig[id] || {} : {}
+    const diffData = deepCompareDifference(defaultConfig, pluginConfig)
+    pluginConfigMerge = mergeDeep(pluginConfig, service.feConfig['global'], diffData)
     apply(new PluginAPI(id, service), service.webpackConfig, pluginConfigMerge)
   })
   service.webpackRawFns.push(service.webpackConfig)
