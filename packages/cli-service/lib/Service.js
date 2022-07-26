@@ -48,12 +48,12 @@ const initService = (context, args) => {
 
   return {
     inited: false,
-    context: context,
+    context,
     pkg,
     servicePkg: require('../package.json'),
     pkgDepend: Object.assign({}, pkg.devDependencies || {}, pkg.dependencies || {}),
     webpackConfig,
-    feConfig: {},
+    feConfig: defaultFeConfig(context),
     modes,
     mode: '',
     plugins,
@@ -118,13 +118,18 @@ const readyEnv = (mode) => {
 const initPlugins = () => {
   if (service.inited) return
   service.inited = true
+  service.plugins.forEach(({ id, apply }) => {
+    const { defaultConfig } = apply || {};
+    if (Object.prototype.toString.call(defaultConfig) === '[object Object]') {
+      service.feConfig[id] = defaultConfig
+    }
+  })
   service.webpackConfig = resolveProjectWebpackConfig(service.webpackConfig, service.context)
   service.plugins.forEach(({ id, apply }) => {
-    let pluginConfigMerge = {}
     const { defaultConfig = {} } = apply || {};
     const pluginConfig = Object.prototype.toString.call(service.feConfig) === '[object Object]' ? service.feConfig[id] || {} : {}
     const diffData = deepCompareDifference(defaultConfig, pluginConfig)
-    pluginConfigMerge = mergeDeep(pluginConfig, service.feConfig['global'], diffData)
+    const pluginConfigMerge = mergeDeep(pluginConfig, service.feConfig['global'], diffData)
     apply(new PluginAPI(id, service), service.webpackConfig, pluginConfigMerge)
   })
   service.webpackRawFns.push(service.webpackConfig)
@@ -193,22 +198,12 @@ const resolvePluginModes = (plugins) => {
 const resolveFeConfig = (feConfig) => {
   if (!feConfig) return
 
-  const _defaultFeConfig = defaultFeConfig(service.context)
-
-  service.plugins.forEach(({ id, apply }) => {
-    const { defaultConfig } = apply || {};
-    if (Object.prototype.toString.call(defaultConfig) === '[object Object]') {
-      _defaultFeConfig[id] = defaultConfig
-    }
-  })
-
   if (typeof feConfig === 'function') {
-    feConfig = feConfig(_defaultFeConfig)
+    feConfig = feConfig(service.feConfig)
   }
+  
   if (Object.prototype.toString.call(feConfig) === '[object Object]') {
-    service.feConfig = defaultsDeep(feConfig, _defaultFeConfig)
-  } else {
-    service.feConfig = _defaultFeConfig
+    service.feConfig = defaultsDeep(feConfig, service.feConfig)
   }
 }
 
