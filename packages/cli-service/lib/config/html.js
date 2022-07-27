@@ -227,6 +227,7 @@ module.exports = (api, options, pluginConfig) => {
                 globOptions: {
                   ignore: publicCopyIgnore
                 },
+                noErrorOnMissing: true
               },
             ]
           }
