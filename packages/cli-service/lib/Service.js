@@ -109,7 +109,7 @@ module.exports = async () => {
 
 const readyEnv = (mode) => {
   service.mode = mode;
-  const nodeRuningEnv = (mode === 'production' || mode === 'test') ? mode : 'development'
+  const nodeRuningEnv = (mode === 'production' || mode === 'test') ? 'production' : 'development'
   process.env.NODE_ENV = nodeRuningEnv
   process.env.BABEL_ENV = nodeRuningEnv
   resolveEnvFiles(service.context, mode)
